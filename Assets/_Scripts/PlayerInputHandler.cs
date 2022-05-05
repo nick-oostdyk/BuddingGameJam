@@ -17,13 +17,13 @@ public class PlayerInputHandler : MonoBehaviour
 		INTERACT = 0b1,
 	}
 
-	private Entity _player;
+	private Player _player;
 	private InputState _inputState;
 	private Vector2 _movementInput;
 
 	private void Start()
 	{
-		_player = GetComponent<Entity>();
+		_player = GetComponent<Player>();
 
 		_inputState = 0;
 		_movementInput = Vector2.zero;
@@ -39,6 +39,9 @@ public class PlayerInputHandler : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (_inputState.HasFlag(InputState.INTERACT))
+			_player.Interact();
+
 		_player.Move(_movementInput);
 
 		_inputState = 0;
