@@ -6,6 +6,6 @@ public class ResourceTree : Resource
 
 	public override void Interact(Player p)
 	{
-		p.Inventory.ModifyQuantity(Type, Random.Range(1, 5));
+		p.Inventory.ModifyQuantity(Type, Random.Range(1, 5)); // 1-4
 	}
 }

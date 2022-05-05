@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
 
 	private void Awake() => _rigidbody = GetComponent<Rigidbody2D>();
 
+	// called every delta frame
 	public void DoMove(Vector2 direction)
 	{
 		direction.Normalize();

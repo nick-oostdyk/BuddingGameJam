@@ -20,6 +20,5 @@ public enum ResourceType
 public abstract class Resource : MonoBehaviour, IInteractable
 {
 	public abstract ResourceType Type { get; }
-
 	public abstract void Interact(Player p);
 }

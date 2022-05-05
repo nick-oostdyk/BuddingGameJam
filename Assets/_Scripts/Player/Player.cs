@@ -11,20 +11,20 @@ public class Player : Entity
 	private void Start()
 	{
 		Inventory = new PlayerInventory();
-
 		_generatePromptObject();
-
-		_promptObject.SetActive(false);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		// typecheck other as interactable
 		var otherInteractable = other.GetComponent<IInteractable>();
 
 		if (otherInteractable == null) return;
 
+		// cache target if interactable
 		_interactTarget = otherInteractable;
 
+		// display prompt
 		_promptObject.SetActive(true);
 	}
 
@@ -42,23 +42,19 @@ public class Player : Entity
 
 	private void _generatePromptObject()
 	{
+		// create object and set parent & position
 		_promptObject = new GameObject();
 		_promptObject.transform.parent = transform;
 		_promptObject.transform.position = transform.position;
 		_promptObject.transform.localPosition += Vector3.up * 0.75f + Vector3.right;
 
+		// set up spriterenderer on prompt object
 		var sr = _promptObject.AddComponent<SpriteRenderer>();
 		sr.sprite = Resources.Load<Sprite>("Sprites/Keys/E_Key_Light");
 		sr.sortingOrder = 10;
 		sr.sortingLayerName = "Midground";
-	}
 
-	public void PrintInventory()
-	{
-		print("Inventory:");
-		foreach (var (key, value) in Inventory.Inventory)
-		{
-			print($"{key} : x{value}");
-		}
+		// hide object
+		_promptObject.SetActive(false);
 	}
 }

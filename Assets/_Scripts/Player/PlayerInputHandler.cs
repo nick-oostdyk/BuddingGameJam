@@ -5,11 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+	// inputs
 	[Header("Input Axis")]
 	[SerializeField] private InputAction _axisAction;
 	[Header("Interact")]
 	[SerializeField] private InputAction _interactAction;
 
+	// bitflag for currently pressed inputs
 	[System.Flags]
 	private enum InputState : short
 	{
@@ -26,21 +28,24 @@ public class PlayerInputHandler : MonoBehaviour
 	{
 		_player = GetComponent<Player>();
 
+		// clear inputs
 		_inputState = 0;
 		_movementInput = Vector2.zero;
 	}
 
+	// read inputs
 	private void Update()
 	{
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
 		if (Keyboard.current.iKey.wasPressedThisFrame)
-			_player.PrintInventory();
+			_player.Inventory.Print();
 
 		_movementInput = _axisAction.ReadValue<Vector2>();
 	}
 
+	// process inputs
 	private void FixedUpdate()
 	{
 		if (_inputState.HasFlag(InputState.INTERACT))
@@ -48,6 +53,7 @@ public class PlayerInputHandler : MonoBehaviour
 
 		_player.DoMove(_movementInput);
 
+		// clear inputs
 		_inputState = 0;
 		_movementInput = Vector2.zero;
 	}

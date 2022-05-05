@@ -6,6 +6,6 @@ public class ResourceBoulder : Resource
 
 	public override void Interact(Player p)
 	{
-		p.Inventory.ModifyQuantity(Type, Random.Range(1, 3));
+		p.Inventory.ModifyQuantity(Type, Random.Range(1, 3)); // 1-2
 	}
 }
