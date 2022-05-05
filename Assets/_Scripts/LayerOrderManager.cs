@@ -28,7 +28,6 @@ public class LayerOrderManager : MonoBehaviour
         }
     }
 
-    // Orders list of objects with LayerOrder child by their transform.y value.
     public void RebuildLayeredObjectList()
     {
         _objectsInScene.Clear();
