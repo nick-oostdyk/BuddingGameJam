@@ -9,20 +9,21 @@ public class UIInventoryBehaviour : MonoBehaviour
 
 	[SerializeField] private GameObject _inventoryItemPrefab;
 
+	private Dictionary<ItemType, int> _playerInv => Player.InventoryWrapper.Inventory;
+
 	private void FixedUpdate()
 	{
 		if (_player == null)
 		{
 			_player = FindObjectOfType<Player>();
-			_lastInv = new Dictionary<ItemType, int>(_player.InventoryWrapper.Inventory);
+			_lastInv = new Dictionary<ItemType, int>(_playerInv);
 
 			return;
 		}
 
-		var playerInv = _player.InventoryWrapper.Inventory;
-		if (playerInv != _lastInv)
+		if (_playerInv != _lastInv)
 		{
-			_lastInv = _lastInv = new Dictionary<ItemType, int>(playerInv);
+			_lastInv = _lastInv = new Dictionary<ItemType, int>(_playerInv);
 			_updateInventory();
 		}
 	}
@@ -41,7 +42,7 @@ public class UIInventoryBehaviour : MonoBehaviour
 
 	private void _setInventory()
 	{
-		foreach (var (key, value) in _player.InventoryWrapper.Inventory)
+		foreach (var (key, value) in _playerInv)
 			Instantiate(_inventoryItemPrefab, transform)
 				.GetComponent<UIInventoryItemBehaviour>().Init($"{key.ToString().ToLower()}", $"x{value}");
 	}

@@ -4,8 +4,8 @@ public class ResourceTree : Resource
 {
 	public override ItemType ItemDrop => ItemType.WOOD;
 
-	public override void Harvest(Player p)
+	public override void Interact()
 	{
-		p.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 5)); // 1-4
+		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 5)); // 1-4
 	}
 }

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Player : Entity
 {
-	public PlayerInventory InventoryWrapper;
+	public static PlayerInventory InventoryWrapper;
 
 	private GameObject _promptObject;
-	private IHarvestable _interactTarget;
+	private IInteractable _interactTarget;
 
 	private void Start()
 	{
@@ -17,7 +17,7 @@ public class Player : Entity
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		// typecheck other as interactable
-		var otherInteractable = other.GetComponent<IHarvestable>();
+		var otherInteractable = other.GetComponent<IInteractable>();
 
 		if (otherInteractable == null) return;
 
@@ -37,7 +37,7 @@ public class Player : Entity
 	public void Interact()
 	{
 		if (_interactTarget == null) return;
-		_interactTarget.Harvest(this);
+		_interactTarget.Interact();
 	}
 
 	private void _generatePromptObject()

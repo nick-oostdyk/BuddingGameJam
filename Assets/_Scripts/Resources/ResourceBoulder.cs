@@ -4,7 +4,7 @@ public class ResourceBoulder : Resource
 {
 	public override ItemType ItemDrop => ItemType.BOULDER;
 
-	public override void Harvest(Player p)
+	public override void Interact()
 	{
 		int numResourcesDropped = Random.Range(0, 10);
 
@@ -16,6 +16,6 @@ public class ResourceBoulder : Resource
 				break;
 		}
 
-		p.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 3)); // 1-2
+		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 3)); // 1-2
 	}
 }
