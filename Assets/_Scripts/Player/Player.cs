@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class Player : Entity
 {
+	public PlayerInventory Inventory;
+
 	private GameObject _promptObject;
-	private PlayerInventory _inventory;
 	private IInteractable _interactTarget;
 
 	private void Start()
 	{
-		_inventory = new PlayerInventory();
+		Inventory = new PlayerInventory();
+
 		_generatePromptObject();
 
 		_promptObject.SetActive(false);
@@ -35,7 +37,7 @@ public class Player : Entity
 	public void Interact()
 	{
 		if (_interactTarget == null) return;
-		_interactTarget.Interact();
+		_interactTarget.Interact(this);
 	}
 
 	private void _generatePromptObject()
@@ -49,5 +51,14 @@ public class Player : Entity
 		sr.sprite = Resources.Load<Sprite>("Sprites/Keys/E_Key_Light");
 		sr.sortingOrder = 10;
 		sr.sortingLayerName = "Midground";
+	}
+
+	public void PrintInventory()
+	{
+		print("Inventory:");
+		foreach (var (key, value) in Inventory.Inventory)
+		{
+			print($"{key} : x{value}");
+		}
 	}
 }

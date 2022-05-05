@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 143345348}
   - component: {fileID: 143345351}
   - component: {fileID: 143345352}
-  - component: {fileID: 143345350}
+  - component: {fileID: 143345353}
   m_Layer: 0
-  m_Name: tree
+  m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,19 +210,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &143345350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143345347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584eb828d3efd4443bd9f93766a8eaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ResourceType: 4
 --- !u!70 &143345351
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -255,6 +242,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -1.7}
   m_Size: {x: 3.34, y: 4}
   m_Direction: 0
+--- !u!114 &143345353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143345347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ad6d62542ecec40beee9146f6c5711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &367408597
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,9 +434,9 @@ GameObject:
   - component: {fileID: 473761606}
   - component: {fileID: 473761609}
   - component: {fileID: 473761610}
-  - component: {fileID: 473761608}
+  - component: {fileID: 473761611}
   m_Layer: 0
-  m_Name: driftwood
+  m_Name: Driftwood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,19 +509,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &473761608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473761605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584eb828d3efd4443bd9f93766a8eaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ResourceType: 3
 --- !u!70 &473761609
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -555,6 +541,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.12}
   m_Size: {x: 3.72, y: 1.73}
   m_Direction: 1
+--- !u!114 &473761611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473761605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ccd01d723056b4e91493bbcc89f4a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,8 +683,8 @@ GameObject:
   - component: {fileID: 547344718}
   - component: {fileID: 547344719}
   - component: {fileID: 547344722}
-  - component: {fileID: 547344720}
   - component: {fileID: 547344721}
+  - component: {fileID: 547344720}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -897,27 +895,14 @@ GameObject:
   - component: {fileID: 626722145}
   - component: {fileID: 626722147}
   - component: {fileID: 626722148}
-  - component: {fileID: 626722144}
+  - component: {fileID: 626722149}
   m_Layer: 0
-  m_Name: boulder
+  m_Name: Boulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &626722144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626722143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584eb828d3efd4443bd9f93766a8eaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ResourceType: 1
 --- !u!212 &626722145
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1017,6 +1002,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.34}
   m_Size: {x: 3.77, y: 2.56}
   m_Direction: 1
+--- !u!114 &626722149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626722143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee95f001bf07f764a91bc05bd516ab19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &716279490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,9 +1112,9 @@ GameObject:
   - component: {fileID: 906411258}
   - component: {fileID: 906411257}
   - component: {fileID: 906411261}
-  - component: {fileID: 906411259}
+  - component: {fileID: 906411262}
   m_Layer: 0
-  m_Name: stones
+  m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1190,19 +1187,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &906411259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 906411256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584eb828d3efd4443bd9f93766a8eaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ResourceType: 0
 --- !u!58 &906411261
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1219,6 +1203,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.049147367}
   serializedVersion: 2
   m_Radius: 1.0823252
+--- !u!114 &906411262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906411256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e92c7cb24e0c944b92cd3eb4418140d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &991645195
 GameObject:
   m_ObjectHideFlags: 0

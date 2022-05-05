@@ -18,6 +18,7 @@ public class PlayerInputHandler : MonoBehaviour
 	}
 
 	private Player _player;
+
 	private InputState _inputState;
 	private Vector2 _movementInput;
 
@@ -34,6 +35,9 @@ public class PlayerInputHandler : MonoBehaviour
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
+		if (Keyboard.current.iKey.wasPressedThisFrame)
+			_player.PrintInventory();
+
 		_movementInput = _axisAction.ReadValue<Vector2>();
 	}
 
@@ -42,7 +46,7 @@ public class PlayerInputHandler : MonoBehaviour
 		if (_inputState.HasFlag(InputState.INTERACT))
 			_player.Interact();
 
-		_player.Move(_movementInput);
+		_player.DoMove(_movementInput);
 
 		_inputState = 0;
 		_movementInput = Vector2.zero;

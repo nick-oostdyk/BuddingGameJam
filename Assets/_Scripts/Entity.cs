@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour
 
 	private void Awake() => _rigidbody = GetComponent<Rigidbody2D>();
 
-	public void Move(Vector2 direction)
+	public void DoMove(Vector2 direction)
 	{
 		direction.Normalize();
 
