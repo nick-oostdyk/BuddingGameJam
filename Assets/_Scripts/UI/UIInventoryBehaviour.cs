@@ -4,34 +4,17 @@ using UnityEngine;
 
 public class UIInventoryBehaviour : MonoBehaviour
 {
-	private Player _player;
-	private Dictionary<ItemType, int> _lastInv; // inventory cache
-
 	[SerializeField] private GameObject _inventoryItemPrefab;
 
-	private Dictionary<ItemType, int> _playerInv => Player.InventoryWrapper.Inventory;
-
-	private void FixedUpdate()
+	private void Start()
 	{
-		if (_player == null)
-		{
-			_player = FindObjectOfType<Player>();
-			_lastInv = new Dictionary<ItemType, int>(_playerInv);
-
-			return;
-		}
-
-		if (_playerInv != _lastInv)
-		{
-			_lastInv = _lastInv = new Dictionary<ItemType, int>(_playerInv);
-			_updateInventory();
-		}
+		PlayerInventory.OnPlayerInventoryChange += _updateInventory;
 	}
 
-	private void _updateInventory()
+	private void _updateInventory(Dictionary<ItemType, int> _inventory)
 	{
 		_clearInventory();
-		_setInventory();
+		_setInventory(_inventory);
 	}
 
 	private void _clearInventory()
@@ -40,10 +23,15 @@ public class UIInventoryBehaviour : MonoBehaviour
 			Destroy(child.gameObject);
 	}
 
-	private void _setInventory()
+	private void _setInventory(Dictionary<ItemType, int> _inventory)
 	{
-		foreach (var (key, value) in _playerInv)
+		foreach (var (key, value) in _inventory)
 			Instantiate(_inventoryItemPrefab, transform)
 				.GetComponent<UIInventoryItemBehaviour>().Init($"{key.ToString().ToLower()}", $"x{value}");
+	}
+
+	private void OnDestroy()
+	{
+		PlayerInventory.OnPlayerInventoryChange -= _updateInventory;
 	}
 }

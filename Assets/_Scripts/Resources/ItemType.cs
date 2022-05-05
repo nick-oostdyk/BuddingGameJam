@@ -3,10 +3,12 @@
 	// resources
 	STONE,
 	BOULDER,
+	METAL_SCRAP,
 	METAL,
 
 	STICK,
 	WOOD,
+	PLANK,
 
 	FIBER,
 	ROPE,

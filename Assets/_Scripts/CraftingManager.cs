@@ -13,14 +13,49 @@ public class CraftingManager : MonoBehaviour
 
 	private void _generateRecipes()
 	{
+		Recipes = new List<CraftingRecipe>();
+
+		// Basic Multitool
 		new CraftingRecipe(
-			// basic multitool
 			new Dictionary<ItemType, int>()
 			{
-				{ ItemType.STONE, 4 },
+				{ ItemType.STONE, 5 },
 				{ ItemType.STICK, 2 },
 				{ ItemType.FIBER, 2 },
 			}, (ItemType.BASIC_MULTI_TOOL, 1));
+
+		// Adv multitool
+		new CraftingRecipe(
+			new Dictionary<ItemType, int>()
+			{
+				{ ItemType.BOULDER, 3 },
+				{ ItemType.WOOD, 2 },
+				{ ItemType.FIBER, 6 },
+			}, (ItemType.ADVANCED_MULTI_TOOL, 1));
+
+		// Fishing Rod
+		new CraftingRecipe(
+			new Dictionary<ItemType, int>()
+			{
+				{ ItemType.WOOD, 2 },
+				{ ItemType.ROPE, 2 },
+			}, (ItemType.FISHING_ROD, 1));
+
+		// Planks
+		new CraftingRecipe(
+			new Dictionary<ItemType, int>()
+			{
+				{ ItemType.WOOD, 4 },
+			}, (ItemType.PLANK, 2));
+
+		// Rope
+		new CraftingRecipe(
+			new Dictionary<ItemType, int>()
+			{
+				{ ItemType.FIBER, 8 },
+			}, (ItemType.ROPE, 3));
+
+
 	}
 }
 
@@ -34,5 +69,32 @@ public class CraftingRecipe
 		Recipe = recipe;
 		Result = result;
 		CraftingManager.Recipes.Add(this);
+	}
+
+	public bool CheckIfCanCraft()
+	{
+		var canCraft = true;
+		var pInv = Player.InventoryWrapper.Inventory;
+
+		foreach (var (key, value) in Recipe)
+			if (!pInv.ContainsKey(key) || pInv[key] < value)
+			{
+				canCraft = false;
+				break;
+			}
+
+		return canCraft;
+	}
+
+	public void TryCraft()
+	{
+		if (!CheckIfCanCraft()) return;
+
+		foreach (var (key, value) in Recipe)
+			Player.InventoryWrapper.ModifyQuantity(key, -value);
+
+		Player.InventoryWrapper.ModifyQuantity(Result.Item1, Result.Item2);
+
+		Debug.Log($"Crafted {Result.Item1}");
 	}
 }

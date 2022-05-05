@@ -4,8 +4,14 @@ using System.Linq;
 
 public class PlayerInventory
 {
+	public static System.Action<Dictionary<ItemType, int>> OnPlayerInventoryChange;
+
 	public Dictionary<ItemType, int> Inventory { get; private set; }
-	public PlayerInventory() => Inventory = new Dictionary<ItemType, int>();
+	public PlayerInventory()
+	{
+		Inventory = new Dictionary<ItemType, int>();
+		OnPlayerInventoryChange?.Invoke(Inventory);
+	}
 
 	// adds item to inventory if it does not exist
 	// mutates quantity if item exists
@@ -22,6 +28,15 @@ public class PlayerInventory
 			Inventory.Remove(resource);
 
 		Sort();
+		OnPlayerInventoryChange?.Invoke(Inventory);
+	}
+
+	public void ModifyQuantity((ItemType, int) item) => ModifyQuantity(item.Item1, item.Item2);
+
+	public void ModifyQuantity(Dictionary<ItemType, int> dict)
+	{
+		foreach (var (key, value) in dict)
+			ModifyQuantity(key, value);
 	}
 
 	public void Sort()
@@ -29,6 +44,9 @@ public class PlayerInventory
 		Inventory = Inventory
 			.OrderBy(item => (int)item.Key)
 			.ToDictionary(item => item.Key, item => item.Value);
+
+		var list = GameObject.FindObjectsOfType<GameObject>().Where(i => i.CompareTag("RenderPositionCheck"));
+		list = list.OrderBy(i => i.transform.position.y);
 	}
 
 	public void Print()
