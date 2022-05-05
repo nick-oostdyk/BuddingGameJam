@@ -2,10 +2,10 @@
 
 public class ResourceDriftwood : Resource
 {
-	public override ResourceType Type => ResourceType.STICK;
+	public override ItemType ItemDrop => ItemType.STICK;
 
-	public override void Interact(Player p)
+	public override void Harvest(Player p)
 	{
-		p.Inventory.ModifyQuantity(Type, Random.Range(2, 6)); // 2-5
+		p.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(2, 6)); // 2-5
 	}
 }

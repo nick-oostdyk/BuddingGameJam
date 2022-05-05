@@ -2,23 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ResourceType
+public abstract class Resource : MonoBehaviour, IHarvestable
 {
-	STONE,
-	BOULDER,
-	METAL,
-
-	STICK,
-	WOOD,
-
-	FIBER,
-	ROPE,
-
-	NUM_RESOURCES
-}
-
-public abstract class Resource : MonoBehaviour, IInteractable
-{
-	public abstract ResourceType Type { get; }
-	public abstract void Interact(Player p);
+	public abstract ItemType ItemDrop { get; }
+	public abstract void Harvest(Player p);
 }

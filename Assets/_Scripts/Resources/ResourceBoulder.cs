@@ -2,10 +2,20 @@
 
 public class ResourceBoulder : Resource
 {
-	public override ResourceType Type => ResourceType.BOULDER;
+	public override ItemType ItemDrop => ItemType.BOULDER;
 
-	public override void Interact(Player p)
+	public override void Harvest(Player p)
 	{
-		p.Inventory.ModifyQuantity(Type, Random.Range(1, 3)); // 1-2
+		int numResourcesDropped = Random.Range(0, 10);
+
+		switch (numResourcesDropped)
+		{
+			case int n when n < 7:
+				break;
+			default:
+				break;
+		}
+
+		p.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 3)); // 1-2
 	}
 }

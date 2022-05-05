@@ -39,9 +39,6 @@ public class PlayerInputHandler : MonoBehaviour
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
-		if (Keyboard.current.iKey.wasPressedThisFrame)
-			_player.Inventory.Print();
-
 		_movementInput = _axisAction.ReadValue<Vector2>();
 	}
 
