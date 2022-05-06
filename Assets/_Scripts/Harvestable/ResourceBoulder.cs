@@ -6,6 +6,8 @@ public class ResourceBoulder : Resource
 
 	public override void Interact()
 	{
+		base.Interact();
+
 		int dropRoll = Random.Range(0, 10);
 
 		switch (dropRoll)

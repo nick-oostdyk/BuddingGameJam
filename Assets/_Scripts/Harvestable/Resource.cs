@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class Resource : MonoBehaviour, IInteractable
 {
+	public System.Action<Resource> onResourceHarvest;
 	public abstract ItemType ItemDrop { get; }
-	public abstract void Interact();
+	public virtual void Interact() => onResourceHarvest?.Invoke(this);
 	protected PlayerInventory _playerInv => Player.InventoryWrapper;
 }

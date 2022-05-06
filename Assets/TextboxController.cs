@@ -1,0 +1,112 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using TMPro;
+
+public class TextboxController : MonoBehaviour
+{
+	// singleton -----
+	private static TextboxController _i;
+	public static TextboxController Instance;
+
+	public void Awake()
+	{
+		if (_i == null) _i = this;
+		else Destroy(this);
+	}
+	// -----
+
+	private enum TextArea : short
+	{
+		HEAD,
+		BODY,
+	}
+
+	public class TextSequence
+	{
+		public string[] Sequence;
+		public int Index;
+
+		public TextSequence(string[] sequence)
+		{
+			Sequence = sequence;
+			Index = 0;
+		}
+	}
+
+	[Header("Continue / Close input")]
+	[SerializeField] private InputAction _action;
+	[SerializeField] private GameObject _textboxPanel;
+
+	private TextMeshProUGUI[] _text;
+
+	private Queue<(string, TextSequence)> _textQueue;
+	private TextSequence _currentSequence => _textQueue.Peek().Item2;
+
+	private void Start()
+	{
+		_text = _textboxPanel.GetComponentsInChildren<TextMeshProUGUI>();
+		_textboxPanel.SetActive(false);
+
+		_textQueue = new Queue<(string, TextSequence)>();
+	}
+
+	private void Update()
+	{
+		if (_action.WasPerformedThisFrame())
+			_advanceOrEnd();
+	}
+
+	private void _advanceOrEnd()
+	{
+		_currentSequence.Index++;
+		// if current sequence is finished
+		if (_currentSequence.Index == _currentSequence.Sequence.Length)
+		{
+			_textQueue.Dequeue();
+			_beginNewSequence();
+		}
+
+		if (_textQueue.Count == 0)
+			_textboxPanel.SetActive(false);
+		
+		else
+			_setText(_currentSequence.Sequence[_currentSequence.Index]);
+	}
+
+	public void PushText(string head, string text) => PushSquence(head, new TextSequence(new string[] { text }));
+	public void PushSquence(string head, TextSequence sequence)
+	{
+		_textQueue.Enqueue((head, sequence));
+		_pushLive();
+	}
+
+	private void _pushLive()
+	{
+		if (_textboxPanel.activeInHierarchy) return;
+
+		_textboxPanel.SetActive(true);
+		_beginNewSequence();
+	}
+
+	private void _beginNewSequence()
+	{
+		var (head, sequence) = _textQueue.Peek();
+		_setText(head, sequence.Sequence[sequence.Index]);
+	}
+
+	private void _setText(string head, string body)
+	{
+		_text[(short)TextArea.HEAD].text = head;
+		_text[(short)TextArea.BODY].text = body;
+	}
+
+	private void _setText(string body)
+	{
+		_text[(short)TextArea.BODY].text = body;
+	}
+
+	private void OnEnable() => _action.Enable();
+	private void OnDisable() => _action.Disable();
+}

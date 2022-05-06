@@ -6,6 +6,8 @@ public class ResourceDriftwood : Resource
 
 	public override void Interact()
 	{
+		base.Interact();
+
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(2, 6)); // 2-5
 	}
 }

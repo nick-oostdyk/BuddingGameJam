@@ -6,6 +6,8 @@ public class ResourceStone : Resource
 
 	public override void Interact()
 	{
+		base.Interact();
+
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(3, 7)); // 3-6
 	}
 }
