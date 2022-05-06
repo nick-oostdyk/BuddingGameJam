@@ -10,4 +10,5 @@ public class ResourceStone : Resource
 
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(3, 7)); // 3-6
 	}
+
 }

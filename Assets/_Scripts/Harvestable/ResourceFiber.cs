@@ -10,4 +10,5 @@ public class ResourceFiber : Resource
 
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(4, 8)); // 4-7
 	}
+
 }

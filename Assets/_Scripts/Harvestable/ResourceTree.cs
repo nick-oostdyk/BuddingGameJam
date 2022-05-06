@@ -10,4 +10,5 @@ public class ResourceTree : Resource
 
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(1, 5)); // 1-4
 	}
+
 }

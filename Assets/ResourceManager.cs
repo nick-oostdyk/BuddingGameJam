@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
-public class ExampleResourceManager : MonoBehaviour
+public class ResourceManager : MonoBehaviour
 {
 	public void Start()
 	{
@@ -13,8 +14,12 @@ public class ExampleResourceManager : MonoBehaviour
 		}
 	}
 
-	private void _resourceInteractHandler(Resource r)
+	private async void _resourceInteractHandler(Resource r)
 	{
-		// do somethign with the resource after the player has interacted with it
+		r.gameObject.SetActive(false);
+		await Task.Delay(Random.Range(10000, 50000));
+		if (r == null) return;
+		r.gameObject.SetActive(true);
 	}
+
 }
