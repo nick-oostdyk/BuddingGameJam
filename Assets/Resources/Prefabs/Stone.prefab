@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 6661691286306026368}
   - component: {fileID: 6661691286306026371}
   - component: {fileID: 6661691286306026375}
+  - component: {fileID: 6661691287144714111}
   - component: {fileID: 6661691286306026372}
+  - component: {fileID: 6191746369379689251}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -76,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 945563547
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 78ab1fb30c0530d41abf5719024e8336, type: 3}
+  m_Sprite: {fileID: -1948734420, guid: 42efff65b8381384190adc08c7f41fbc, type: 3}
   m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,6 +105,26 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.049147367}
   serializedVersion: 2
   m_Radius: 1.0823252
+--- !u!95 &6661691287144714111
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661691286306026370}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1311a2cb76900634c981504294037481, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &6661691286306026372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +137,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e92c7cb24e0c944b92cd3eb4418140d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6191746369379689251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661691286306026370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c778d7710cc941148a0a4549f9d27221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animations:
+  - Rock_M_Idle
+  - Rock_S_Idle
 --- !u!1 &8352093818759989235
 GameObject:
   m_ObjectHideFlags: 0
