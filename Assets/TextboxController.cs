@@ -44,12 +44,14 @@ public class TextboxController : MonoBehaviour
 	private Queue<(string, TextSequence)> _textQueue;
 	private TextSequence _currentSequence => _textQueue.Peek().Item2;
 
-	private void Start()
+	private async void Start()
 	{
 		_text = _textboxPanel.GetComponentsInChildren<TextMeshProUGUI>();
 		_textboxPanel.SetActive(false);
 
 		_textQueue = new Queue<(string, TextSequence)>();
+
+		//_pushExampleDialogue();
 	}
 
 	private void Update()
@@ -64,13 +66,12 @@ public class TextboxController : MonoBehaviour
 		// if current sequence is finished
 		if (_currentSequence.Index == _currentSequence.Sequence.Length)
 		{
+			print("Moving to next sequence");
 			_textQueue.Dequeue();
 			_beginNewSequence();
 		}
 
-		if (_textQueue.Count == 0)
-			_textboxPanel.SetActive(false);
-		
+		// continue current sequence
 		else
 			_setText(_currentSequence.Sequence[_currentSequence.Index]);
 	}
@@ -92,6 +93,13 @@ public class TextboxController : MonoBehaviour
 
 	private void _beginNewSequence()
 	{
+		// if there's no more text to display
+		if (_textQueue.Count == 0)
+		{
+			_textboxPanel.SetActive(false);
+			return;
+		}
+
 		var (head, sequence) = _textQueue.Peek();
 		_setText(head, sequence.Sequence[sequence.Index]);
 	}
@@ -105,6 +113,17 @@ public class TextboxController : MonoBehaviour
 	private void _setText(string body)
 	{
 		_text[(short)TextArea.BODY].text = body;
+	}
+
+	private void _pushExampleDialogue()
+	{
+		PushText("Cass", "You can do it! Let's get it done, together!");
+		PushSquence("Nick", new TextSequence(new string[] {
+			"Man.",
+			"What are you talking about.",
+			"I'm all for the positivity, but let's just focus on the task."
+			}));
+		PushText("Cass", "-m-");
 	}
 
 	private void OnEnable() => _action.Enable();

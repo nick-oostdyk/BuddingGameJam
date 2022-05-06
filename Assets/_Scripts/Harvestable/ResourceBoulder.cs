@@ -26,6 +26,5 @@ public class ResourceBoulder : Resource
 				_playerInv.ModifyQuantity(ItemType.METAL_SCRAP, Random.Range(1, 4));
 				break;
 		}
-
 	}
 }
