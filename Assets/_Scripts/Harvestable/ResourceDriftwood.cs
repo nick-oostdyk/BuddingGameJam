@@ -10,4 +10,5 @@ public class ResourceDriftwood : Resource
 
 		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(2, 6)); // 2-5
 	}
+
 }
