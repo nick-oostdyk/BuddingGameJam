@@ -39,7 +39,7 @@ public class DropTable
 		foreach (var (list, index) in indexDroplistTable)
 			if (roll < index)
 			{
-				_givePlayerDrops(list);
+				Player.InventoryWrapper.ModifyQuantity(list);
 				break;
 			}
 
