@@ -2,13 +2,5 @@
 
 public class ResourceStone : Resource
 {
-	public override ItemType ItemDrop => ItemType.STONE;
-
-	public override void Interact()
-	{
-		base.Interact();
-
-		Player.InventoryWrapper.ModifyQuantity(ItemDrop, Random.Range(3, 7)); // 3-6
-	}
-
+	public override ResourceType Type => ResourceType.STONE;
 }

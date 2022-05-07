@@ -8,6 +8,7 @@ public class TimeManager : MonoBehaviour
 	void Start() => _timeStart = Time.time;
 
 	public static float TimeSinceStart => Time.time - _timeStart;
+	public static int TimeSinceStartInt => Mathf.FloorToInt(Time.time - _timeStart);
 	public static float TimeRemaining => 1000f - TimeSinceStart;
 	public static int TimeRemainingInt => 1000 - Mathf.FloorToInt(TimeSinceStart);
 }
