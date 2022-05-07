@@ -26,7 +26,7 @@ public class Player : Entity
 		_interactTarget = otherInteractable;
 
 		_promptObject.SetSprite(
-			other.TryGetComponent<ResourceFish>(out var _)
+			other.TryGetComponent<FishingSpot>(out var _)
 			? PromptObject.FishingIcon 
 			: PromptObject.EKey);
 

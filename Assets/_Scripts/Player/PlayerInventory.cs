@@ -33,9 +33,9 @@ public class PlayerInventory
 
 	public void ModifyQuantity((ItemType, int) item) => ModifyQuantity(item.Item1, item.Item2);
 
-	public void ModifyQuantity(IEnumerable<(ItemType, int)> iteratable)
+	public void ModifyQuantity(Dictionary<ItemType, int> dict)
 	{
-		foreach (var (key, value) in iteratable) ModifyQuantity(key, value);
+		foreach (var (key, value) in dict) ModifyQuantity(key, value);
 	}
 
 	public void Sort()

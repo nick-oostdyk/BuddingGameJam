@@ -29,7 +29,7 @@
 	NUM_ITEMS
 }
 
-//public static class Item
-//{
+public enum FishType
+{
 
-//}
+}
