@@ -18,27 +18,36 @@ public class DropTable
 	//	)
 	private Dictionary<ResourceType, List<(List<(ItemType, int)>, int)>> _dropTable;
 
+	private PlayerInventory _pInv => Player.InventoryWrapper;
 	public DropTable(Dictionary<ResourceType, List<(List<(ItemType, int)>, int)>> dictionary) => _dropTable = dictionary;
 
-	public List<(ItemType, int)> RollResource(ResourceType resourceType)
+	public void RollResource(ResourceType resourceType)
 	{
-		// create list to store all drop lists for resource, and index
-		var indexDropListTable = new SortedDictionary<int, List<(ItemType, int)>>();
+		// cache lists & store indexes
+		var indexDroplistTable = new List<(List<(ItemType, int)>, int)>();
 		var sum = 0;
 
-		// cache lists & store index's
-		foreach (var (dropList, dropRolls) in _dropTable[resourceType])
+		foreach (var (droplist, dropRolls) in _dropTable[resourceType])
 		{
 			sum += dropRolls;
-			indexDropListTable.Add(sum, dropList);
+			indexDroplistTable.Add((droplist, sum));
 		}
 
+		// pick winning resource list
 		var roll = Random.Range(0, sum);
 
-		// pick winning resource list
-		foreach (var (index, list) in indexDropListTable)
-			if (roll < index) return list;
+		foreach (var (list, index) in indexDroplistTable)
+			if (roll < index)
+			{
+				_givePlayerDrops(list);
+				break;
+			}
 
-		return null;
+	}
+
+	private void _givePlayerDrops(List<(ItemType, int)> drops)
+	{
+		foreach (var (item, quantity) in drops)
+			_pInv.ModifyQuantity(item, quantity);
 	}
 }

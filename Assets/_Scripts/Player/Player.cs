@@ -75,11 +75,7 @@ public class PromptObject
 	}
 
 	public void SetEnabled(bool enabled) => _sr.color = new Color(1f, 1f, 1f, enabled ? 1f : 0f);
-	public void SetSprite(Sprite sprite)
-	{
-		Debug.Log("changing sprite");
-		_sr.sprite = sprite;
-	}
+	public void SetSprite(Sprite sprite) => _sr.sprite = sprite;
 
 	private void _initSprites()
 	{
