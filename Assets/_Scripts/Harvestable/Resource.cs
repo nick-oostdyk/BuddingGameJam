@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,8 @@ public enum ResourceType : short
 
 public abstract class Resource : MonoBehaviour, IInteractable
 {
-	public System.Action<Resource> onResourceHarvest;
-	public virtual void Interact() => onResourceHarvest?.Invoke(this);
+	public event EventHandler OnInteract;
+	public virtual void Interact() => OnInteract?.Invoke(this, EventArgs.Empty);
 
 	public abstract ResourceType Type { get; }
 	protected PlayerInventory _playerInv => Player.InventoryWrapper;

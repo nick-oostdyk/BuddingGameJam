@@ -22,11 +22,11 @@ public class ToggleUI : MonoBehaviour
 	void Update()
 	{
 		if (_action.WasPerformedThisFrame()) 
-			_toggle();
+			Toggle();
 	}
 
 	// toggle if the object is active in the hierarchy
-	private void _toggle()
+	public void Toggle()
 	{
 		_enabled = !_enabled;
 		_UIObject.SetActive(_enabled);

@@ -2634,7 +2634,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7771084, y: 1}
+    m_SensorSize: {x: 1.7776073, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -7581,8 +7581,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2074558561}
   - component: {fileID: 2074558564}
-  - component: {fileID: 2074558563}
   - component: {fileID: 2074558565}
+  - component: {fileID: 2074558563}
   m_Layer: 0
   m_Name: FishingSpot
   m_TagString: Untagged

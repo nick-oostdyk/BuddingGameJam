@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class FirepitBehaviour : MonoBehaviour, IInteractable
 	private SpriteRenderer _sr;
 	private Sprite _litSprite, _unlitSprite;
 	private bool _isLit;
+
+	public event EventHandler OnInteract;
 
 	private void Start()
 	{

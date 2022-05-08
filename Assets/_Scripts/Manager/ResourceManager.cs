@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using System.Linq;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -19,11 +18,14 @@ public class ResourceManager : MonoBehaviour
 
 		// iterate over all the children and subscribe to harvest event
 		foreach (var resource in resourceArr)
-			resource.onResourceHarvest += _resourceInteractHandler;
+			resource.OnInteract += _resourceInteractHandler;
 	}
 
-	private async void _resourceInteractHandler(Resource resource)
+	private async void _resourceInteractHandler(object sender, System.EventArgs arg)
 	{
+		var resource = (Resource)sender;
+		if (resource == null) return;
+
 		_resourceDropTable.RollAndSet(resource.Type);
 		resource.gameObject.SetActive(false);
 
