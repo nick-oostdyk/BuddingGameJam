@@ -47,6 +47,7 @@ public class FishingGameOne : MonoBehaviour
 		// will to escape
 		var fishLocalPos = _fish.transform.localPosition;
 		influence += .1f * (fishLocalPos.x < 0f ? -1f : 1f);
+		_fish.GetComponent<SpriteRenderer>().flipX = influence <= 0f;
 
 		// player influence
 		influence += .6f * _action.ReadValue<float>();
