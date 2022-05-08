@@ -5,38 +5,28 @@ public class Player : Entity
 {
 	public static PlayerInventory InventoryWrapper;
 
-	private PromptObject _promptObject;
+	public PromptObject PromptObject;
 	private IInteractable _interactTarget;
 
 	private void Start()
 	{
 		InventoryWrapper = new PlayerInventory();
 
-		_promptObject = new PromptObject(transform);
+		PromptObject = new PromptObject(transform);
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
+	private void OnTriggerStay2D(Collider2D other)
 	{
-		// typecheck other as interactable
-		var otherInteractable = other.GetComponent<IInteractable>();
+		// set interact target
+		if (other.TryGetComponent<IInteractable>(out var interactable))
+			_interactTarget = interactable;
 
-		if (otherInteractable == null) return;
-
-		// cache target if interactable
-		_interactTarget = otherInteractable;
-
-		_promptObject.SetSprite(
-			other.TryGetComponent<FishingSpot>(out var _)
-			? PromptObject.FishingIcon 
-			: PromptObject.EKey);
-
-		// display prompt
-		_promptObject.SetEnabled(true);
+		TryShowPrompt();
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		_promptObject.SetEnabled(false);
+		PromptObject.SetEnabled(false);
 		_interactTarget = null;
 	}
 
@@ -44,6 +34,31 @@ public class Player : Entity
 	{
 		if (_interactTarget == null) return;
 		_interactTarget.Interact();
+	}
+
+	public void TryShowPrompt()
+	{
+		if (PromptObject.Enabled) return;
+
+		var hits = Physics2D.OverlapCircleAll(transform.position, .5f);
+
+		if (hits.Length > 0) PromptObject.Reset();
+
+		foreach (var hit in hits)
+		{
+			// if collided obj is interactable
+			if (hit.TryGetComponent<IInteractable>(out var comp))
+			{
+				// set sprite
+				PromptObject.SetSprite(
+				hit.TryGetComponent<FishingSpot>(out var _)
+				? PromptObject.FishingIcon
+				: PromptObject.EKey);
+
+				// display prompt
+				PromptObject.SetEnabled(true);
+			}
+		}
 	}
 }
 
@@ -55,6 +70,8 @@ public class PromptObject
 	private GameObject _object;
 	private SpriteRenderer _sr;
 
+	public bool Enabled { get; private set; }
+
 	public PromptObject(Transform parent)
 	{
 		_initSprites();
@@ -62,8 +79,7 @@ public class PromptObject
 		// create object and set parent & position
 		_object = new GameObject();
 		_object.transform.parent = parent;
-		_object.transform.position = parent.position;
-		_object.transform.localPosition += Vector3.up * 0.75f + Vector3.right;
+		Reset();
 
 		// set up spriterenderer on prompt object
 		_sr = _object.AddComponent<SpriteRenderer>();
@@ -74,8 +90,21 @@ public class PromptObject
 		SetEnabled(false);
 	}
 
-	public void SetEnabled(bool enabled) => _sr.color = new Color(1f, 1f, 1f, enabled ? 1f : 0f);
+	public void SetEnabled(bool enabled)
+	{
+		Enabled = enabled;
+		_sr.color = new Color(1f, 1f, 1f, enabled ? 1f : 0f);
+	}
+
 	public void SetSprite(Sprite sprite) => _sr.sprite = sprite;
+	public void SetPosition(Vector3 position) => _object.transform.position = position;
+	public void SetScale(Vector3 scale) => _object.transform.localScale = scale;
+	public void Reset()
+	{
+		_object.transform.position = _object.transform.parent.position;
+		_object.transform.localPosition = Vector3.up * 0.75f + Vector3.right;
+		_object.transform.localScale = Vector3.one;
+	}
 
 	private void _initSprites()
 	{
