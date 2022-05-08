@@ -22,4 +22,7 @@ public class Entity : MonoBehaviour
 		if (direction == Vector2.zero || d < 0.1f)
 			_rigidbody.velocity = Vector2.Lerp(_rigidbody.velocity, Vector2.zero, .15f);
 	}
+
+	public void StopAllMovementImmediate() => _rigidbody.velocity = Vector3.zero;
+	public void SetPosition(Vector3 position) => transform.position = position;
 }

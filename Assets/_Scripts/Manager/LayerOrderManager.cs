@@ -1,47 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class LayerOrderManager : MonoBehaviour
 {
-    private List<GameObject> _objectsInScene = new List<GameObject>();
-    private Player _player;
+	private Player _player;
+	private List<Transform> _layerOrderObjects = new List<Transform>();
 
-    void Start()
-    {
-        _player = FindObjectOfType<Player>();
-        RebuildLayeredObjectList();
-    }
+	private Vector3 _feetPos => _player.transform.Find("Feet").position;
+	private Vector3 _pPos => _player.transform.position;
+	private SpriteRenderer _playerRenderer;
 
-    void Update()
-    {
-        foreach (var o in _objectsInScene)
-        {
-            if (o.tag == "Player")
-                continue;
-            else if (o.transform.position.y - 0.5f >= _player.transform.position.y)
-                _player.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
-            else 
-                _player.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
+	void Start()
+	{
+		_player = FindObjectOfType<Player>();
+		_playerRenderer = _player.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
-        }
-    }
+		RebuildLayeredObjectList();
+	}
 
-    public void RebuildLayeredObjectList()
-    {
-        _objectsInScene.Clear();
+	void FixedUpdate()
+	{
+		// find closest LayerOrder
+		float minDist = float.MaxValue;
+		Vector3 minPos = Vector3.zero;
+		foreach (var obj in _layerOrderObjects)
+		{
+			var dist = Vector2.SqrMagnitude(obj.transform.parent.position - _pPos);
+			if (dist < minDist)
+			{
+				minDist = dist;
+				minPos = obj.transform.position;
+			}
+		}
 
-        foreach (var o in FindObjectsOfType<GameObject>())
-        {
-            if (o.transform.Find("LayerOrder"))
-            {
-                _objectsInScene.Add(o);
-                if(o.tag != "Player")
-                    o.GetComponent<SpriteRenderer>().sortingOrder = 3;
-            }
-        }
+		// check player y position against closest LayerOrder position
+		_playerRenderer.sortingOrder = _feetPos.y <= minPos.y ? 4 : 2;
+	}
 
-        _objectsInScene = _objectsInScene.OrderBy(i => i.transform.position.y).ToList();
-    }
+	public void RebuildLayeredObjectList()
+	{
+		_layerOrderObjects.Clear();
+
+		var objects = GameObject.FindGameObjectsWithTag("LayerOrder");
+
+		foreach (var obj in objects)
+		{
+			_layerOrderObjects.Add(obj.transform);
+			obj.GetComponentInParent<SpriteRenderer>().sortingOrder = 3;
+		}
+	}
 }

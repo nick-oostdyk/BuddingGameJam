@@ -39,9 +39,6 @@ public class PlayerInputHandler : MonoBehaviour
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
-		if (Keyboard.current.kKey.wasPressedThisFrame)
-			FindObjectOfType<DayCycleController>().StartDay();
-
 		_movementInput = _axisAction.ReadValue<Vector2>();
 	}
 
