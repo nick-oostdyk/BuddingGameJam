@@ -26,7 +26,7 @@ public class TeleportToPoint : MonoBehaviour
 		var player = FindObjectOfType<Player>();
 		var input = player.GetComponent<PlayerInputHandler>();
 
-		player.StopAllMovementImmediate();
+		player.StopMovementImmediate();
 		input.enabled = false;
 		await fade.FadeOut();
 		

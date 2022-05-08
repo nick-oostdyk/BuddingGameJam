@@ -18,12 +18,11 @@ public class ResourceManager : MonoBehaviour
 
 		// iterate over all the children and subscribe to harvest event
 		foreach (var resource in resourceArr)
-			resource.OnInteract += _resourceInteractHandler;
+			resource.OnInteract += (s, e) => _resourceInteractHandler(s as Resource);
 	}
 
-	private async void _resourceInteractHandler(object sender, System.EventArgs arg)
+	private async void _resourceInteractHandler(Resource resource)
 	{
-		var resource = (Resource)sender;
 		if (resource == null) return;
 
 		_resourceDropTable.RollAndSet(resource.Type);

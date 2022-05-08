@@ -5,6 +5,8 @@ using UnityEngine;
 
 public enum ResourceType : short
 {
+	NONE,
+
 	STONE,
 	BOULDER,
 
@@ -12,7 +14,6 @@ public enum ResourceType : short
 	TREE,
 
 	FIBER,
-	FISH,
 }
 
 public abstract class Resource : MonoBehaviour, IInteractable
@@ -21,5 +22,4 @@ public abstract class Resource : MonoBehaviour, IInteractable
 	public virtual void Interact() => OnInteract?.Invoke(this, EventArgs.Empty);
 
 	public abstract ResourceType Type { get; }
-	protected PlayerInventory _playerInv => Player.InventoryWrapper;
 }

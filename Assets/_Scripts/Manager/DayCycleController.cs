@@ -6,10 +6,9 @@ using UnityEngine.Rendering;
 public class DayCycleController : MonoBehaviour
 {
 	[SerializeField] private Volume _vignetteVolume;
-
+	[SerializeField] private float _dayLength = 333f;
 	[SerializeField] private bool _disable;
 
-	private float _dayLength = 333f;
 	private float _dayStartTime;
 
 	private bool _dayStarting = false;

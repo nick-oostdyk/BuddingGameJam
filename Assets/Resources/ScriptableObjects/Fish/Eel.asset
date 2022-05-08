@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c3fa1de26f332c4593a2d21bcd2fba4, type: 3}
-  m_Name: Tetra_Black
+  m_Name: Eel
   m_EditorClassIdentifier: 
-  Type: 3
-  Sprite: {fileID: 21300000, guid: 467c826ebdfc44147a14944a970daf7e, type: 3}
-  SwimSpeed: 3
-  PlayerFillTime: 2.5
-  FishFillTime: 4.5
-  NumBeats: 3
+  Type: 14
+  Sprite: {fileID: 21300000, guid: f89b343013542654da07ca6336d57d53, type: 3}
+  SwimSpeed: 8
+  PlayerFillTime: 4
+  FishFillTime: 3
+  NumBeats: 7

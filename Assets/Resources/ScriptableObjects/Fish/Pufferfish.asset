@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 12
   Sprite: {fileID: 21300000, guid: 17facb822a6bc184fb9baf62131c3d6e, type: 3}
-  SwimSpeed: 0
-  NumBeats: 3
+  SwimSpeed: 7
+  PlayerFillTime: 3
+  FishFillTime: 3
+  NumBeats: 6

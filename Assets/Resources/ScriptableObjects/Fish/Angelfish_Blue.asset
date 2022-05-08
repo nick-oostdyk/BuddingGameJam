@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3fa1de26f332c4593a2d21bcd2fba4, type: 3}
   m_Name: Angelfish_Blue
   m_EditorClassIdentifier: 
-  Type: 6
+  Type: 9
   Sprite: {fileID: 21300000, guid: 66523b766bf3f4a4685533bd497187a6, type: 3}
-  SwimSpeed: 0
-  NumBeats: 3
+  SwimSpeed: 4
+  PlayerFillTime: 3.5
+  FishFillTime: 3.5
+  NumBeats: 5

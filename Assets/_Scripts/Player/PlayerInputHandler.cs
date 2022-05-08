@@ -39,12 +39,6 @@ public class PlayerInputHandler : MonoBehaviour
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
-		if (Keyboard.current.fKey.wasPressedThisFrame)
-			FindObjectOfType<CinemachineStateSwitcher>().SwitchState(CinemachineStateSwitcher.State.FISHING_CAMERA);
-
-		if (Keyboard.current.pKey.wasPressedThisFrame)
-			FindObjectOfType<CinemachineStateSwitcher>().SwitchState(CinemachineStateSwitcher.State.PLAYER_CAMERA);
-
 		_movementInput = _axisAction.ReadValue<Vector2>();
 	}
 

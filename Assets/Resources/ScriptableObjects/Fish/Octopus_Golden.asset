@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c3fa1de26f332c4593a2d21bcd2fba4, type: 3}
-  m_Name: Tetra_Black
+  m_Name: Octopus_Golden
   m_EditorClassIdentifier: 
-  Type: 3
-  Sprite: {fileID: 21300000, guid: 467c826ebdfc44147a14944a970daf7e, type: 3}
-  SwimSpeed: 3
-  PlayerFillTime: 2.5
-  FishFillTime: 4.5
-  NumBeats: 3
+  Type: 17
+  Sprite: {fileID: 21300000, guid: 49ffed43c4d654348b0f7c1bf86ebafa, type: 3}
+  SwimSpeed: 12
+  PlayerFillTime: 5
+  FishFillTime: 2.5
+  NumBeats: 10

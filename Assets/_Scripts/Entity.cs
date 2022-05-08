@@ -2,9 +2,9 @@
 
 public class Entity : MonoBehaviour
 {
-	private Rigidbody2D _rigidbody;
-	private float _maxSpeed = 10f;
-	private float _acceleration = 100f;
+	protected Rigidbody2D _rigidbody;
+	protected float _maxSpeed = 10f;
+	protected float _acceleration = 100f;
 
 	private void Awake() => _rigidbody = GetComponent<Rigidbody2D>();
 
@@ -23,6 +23,6 @@ public class Entity : MonoBehaviour
 			_rigidbody.velocity = Vector2.Lerp(_rigidbody.velocity, Vector2.zero, .15f);
 	}
 
-	public void StopAllMovementImmediate() => _rigidbody.velocity = Vector3.zero;
+	public void StopMovementImmediate() => _rigidbody.velocity = Vector3.zero;
 	public void SetPosition(Vector3 position) => transform.position = position;
 }

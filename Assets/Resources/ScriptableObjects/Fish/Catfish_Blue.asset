@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3fa1de26f332c4593a2d21bcd2fba4, type: 3}
   m_Name: Catfish_Blue
   m_EditorClassIdentifier: 
-  Type: 10
+  Type: 7
   Sprite: {fileID: 21300000, guid: 239560ae2e548dd4dbd8ac8a96ec9ec2, type: 3}
-  SwimSpeed: 0
-  NumBeats: 3
+  SwimSpeed: 4
+  PlayerFillTime: 3
+  FishFillTime: 4
+  NumBeats: 4
