@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fish : Entity
+public class FishingGameFish : FishingGameEntity
 {
 	public FishItem FishItem;
-	private SpriteRenderer _sr;
 	private Collider2D _zoneCollider;
 	private Collider2D _collider;
 
-
-	private void Start() => _sr = GetComponent<SpriteRenderer>();
 	public void Init(FishItem fish)
 	{
 		FishItem = fish;
@@ -25,10 +22,4 @@ public class Fish : Entity
 	}
 
 	public bool GetIsInZone() => _collider.IsTouching(_zoneCollider);
-	public void ClampPosition()
-	{
-		var localPos = transform.localPosition;
-		localPos.x = Mathf.Clamp(localPos.x, -4.5f, 4.5f);
-		transform.localPosition = localPos;
-	}
 }

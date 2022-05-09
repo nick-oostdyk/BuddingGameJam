@@ -20,18 +20,18 @@ public class FishingManager : MonoBehaviour
 
 	private IEnumerator _onBiteCoEnum;
 
-	private FishingGameOne _fishingGameOne;
+	[SerializeField] private FishingMinigame[] _minigames;
 
 	private void Start()
 	{
 		_player = FindObjectOfType<Player>();
-		_fishingGameOne = FindObjectOfType<FishingGameOne>();
 
 		_releasePoint = _player.transform.Find("FishingReleasePoint");
 		_bobber = transform.GetChild(0).gameObject;
 
 		_bobber.SetActive(false);
-		_fishingGameOne.gameObject.SetActive(false);
+		_minigames[0].gameObject.SetActive(false);
+		_minigames[1].gameObject.SetActive(false);
 
 		_fishArr = Resources.LoadAll<FishItem>("ScriptableObjects/Fish");
 		GetComponent<FishingSpot>().OnInteract += (s, a) => _onFish();
@@ -42,7 +42,6 @@ public class FishingManager : MonoBehaviour
 				_reel = true;
 				StopCoroutine(_onBiteCoEnum);
 				_onBiteCoEnum = null;
-				print("co cancelled");
 			}
 		};
 	}
@@ -63,13 +62,14 @@ public class FishingManager : MonoBehaviour
 
 		// give player fish
 
+		// reset state
 		_bobber.GetComponent<Animator>().SetTrigger("Release");
 		_bobber.SetActive(false);
 
 		// change to player camera
 		camSwitcher.SwitchState(CameraState.PLAYER_CAMERA);
 
-		await Task.Delay(150);
+		await Task.Delay(1000);
 		playerInput.enabled = true;
 	}
 
@@ -77,8 +77,8 @@ public class FishingManager : MonoBehaviour
 	{
 		// only advance to the next game after the preceding game has been won
 		if (!await _castBobber()) return;
-		if (!await _minigameOne()) return;
-		if (!await _minigameTwo()) return;
+		if (!await _playGame(_minigames[0])) return;
+		if (!await _playGame(_minigames[1])) return;
 	}
 
 	private async Task<bool> _castBobber()
@@ -101,9 +101,11 @@ public class FishingManager : MonoBehaviour
 		var bobberOffset = new Vector3(-5f, 2f);
 		var promptOffset = new Vector3(0f, 0.75f);
 
+		// show bobber, move minigames to bobber location
 		_bobber.SetActive(true);
 		_bobber.transform.position = _player.transform.position + bobberOffset;
-		_fishingGameOne.transform.position = _bobber.transform.position;
+		_minigames[0].transform.position = _bobber.transform.position;
+		_minigames[1].transform.position = _bobber.transform.position;
 
 		// wait for fish to come
 		yield return new WaitForSeconds(Random.Range(1f, 3f));
@@ -117,30 +119,27 @@ public class FishingManager : MonoBehaviour
 		prompt.SetScale(Vector3.one * 0.6f);
 
 		// allow player to attempt catch
-		_reel = false; // clear input
+		_reel = false;
 		_canReel = true;
-		yield return new WaitForSeconds(Random.Range(1f, 2f)); // reel-in leniency
-		_reel = false; // reel failed
-		print("co finished");
+
+		// reel-in leniency
+		yield return new WaitForSeconds(Random.Range(1f, 2f));
+
+		// reel failed
+		_reel = false; 
 		_onBiteCoEnum = null;
 	}
 
-	private async Task<bool> _minigameOne()
+	private async Task<bool> _playGame(FishingMinigame game)
 	{
-		_fishingGameOne.gameObject.SetActive(true);
+		game.gameObject.SetActive(true);
+		game.Init(_fish);
 
-		_fishingGameOne.Init(_fish);
-		while (!_fishingGameOne.Complete)
+		while (!game.Complete)
 			await Task.Yield();
 
-		_fishingGameOne.gameObject.SetActive(false);
-		return _fishingGameOne.Success;
-	}
-
-	private async Task<bool> _minigameTwo()
-	{
-		await Task.Yield();
-		return false;
+		game.gameObject.SetActive(false);
+		return game.Success;
 	}
 
 	private void OnEnable() => _reelAction.Enable();

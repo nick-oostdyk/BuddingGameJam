@@ -25,4 +25,5 @@ public class Entity : MonoBehaviour
 
 	public void StopMovementImmediate() => _rigidbody.velocity = Vector3.zero;
 	public void SetPosition(Vector3 position) => transform.position = position;
+	public void SetLocalPosition(Vector3 localPosition) => transform.localPosition = localPosition;
 }

@@ -7,7 +7,7 @@ public class ProgressBar : MonoBehaviour
 	private GameObject _bar;
 	private void Start() => _bar = transform.GetChild(0).gameObject;
 
-	public float Progress { get; private set; }
+	public float Progress { get; private set; } = 0f;
 	public void AddProgress(float deltaProgress) => SetProgress(Progress + deltaProgress);
 	public void SetProgress(float progress)
 	{
