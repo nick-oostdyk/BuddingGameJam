@@ -17,4 +17,4 @@ MonoBehaviour:
   SwimSpeed: 7
   PlayerFillTime: 3.5
   FishFillTime: 3.5
-  NumBeats: 7
+  NumBeats: 4

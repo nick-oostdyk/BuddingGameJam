@@ -79,6 +79,8 @@ public class FishingManager : MonoBehaviour
 		if (!await _castBobber()) return;
 		if (!await _playGame(_minigames[0])) return;
 		if (!await _playGame(_minigames[1])) return;
+
+		print($"Fish Caught: {_fish.Type}!");
 	}
 
 	private async Task<bool> _castBobber()

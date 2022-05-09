@@ -20,7 +20,6 @@ public class FishingMG2 : FishingMinigame
 		DOWN,
 		RIGHT,
 
-		NONE,
 		NO_OF_BEATS,
 	}
 
@@ -75,6 +74,8 @@ public class FishingMG2 : FishingMinigame
 
 		private void _buildObj(Transform parent, Sprite sprite, int index)
 		{
+			go.name = ((Beat)index).ToString();
+
 			var theta = (index + 1) * Mathf.PI / 2;
 			Vector3 offset = Vector3.zero;
 			offset.x = Mathf.Cos(theta);
@@ -112,17 +113,21 @@ public class FishingMG2 : FishingMinigame
 	}
 
 	[SerializeField] private FishingGameBobble _bobble;
+	[SerializeField] private GameObject _ring;
+
 	private FishObject[] _fishObjects;
 	private Beat[] _pattern;
 
 	private State _state;
 
-	protected override void _init()
+	protected async override void _init()
 	{
 		_state = State.VIEW;
+		_ring.transform.localScale = Vector3.zero;
 		_generateFishObjects();
 		_generateBeatPattern();
-		_viewPattern();
+		await _viewPattern();
+		await _playGame();
 	}
 
 	private void FixedUpdate()
@@ -143,47 +148,79 @@ public class FishingMG2 : FishingMinigame
 	{
 		_pattern = new Beat[_fishItem.NumBeats];
 		for (int i = 0; i < _pattern.Length; ++i)
-		{
-			if (Random.Range(0, 6) != 0)
-				_pattern[i] = (Beat)Random.Range(0, 4);
-			else
-				_pattern[i] = Beat.NONE;
-		}
+			_pattern[i] = (Beat)Random.Range(0, 4);
 	}
 
-	private async void _viewPattern()
+	private async Task _viewPattern()
 	{
-		await Task.Delay(800);
 		var beatQueue = new Queue<Beat>(_pattern);
 		foreach (var beat in beatQueue)
 		{
-			print(beat);
-			if (beat != Beat.NONE)
-				_fishObjects[(short)beat].Flash();
 			await Task.Delay(800);
+			_fishObjects[(short)beat].Flash();
 		}
-		await Task.Delay(2000);
-		_state = State.PLAY;
-		_started = true;
+		await Task.Delay(800);
 	}
 
+	private async Task _playGame()
+	{
+		_state = State.PLAY;
+
+		var beatQueue = new Queue<Beat>(_pattern);
+
+		var msPerFrame = 10;
+		var dtSeconds = msPerFrame * 0.001f;
+
+		var noteDurationSeconds = .8f;
+		var numIters = noteDurationSeconds / dtSeconds;
+
+		var deltaScale = 1f / numIters;
+
+		foreach (var beat in beatQueue)
+		{
+			// grow ring
+			var progress = 0f;
+			for (int i = 0; i < numIters; ++i)
+			{
+				_ring.transform.localScale = Vector3.one * progress;
+				progress += deltaScale;
+				await Task.Delay(msPerFrame);
+			}
+
+			var hit = Physics2D.OverlapCircle(_bobble.transform.position, .5f);
+			if (hit != null && hit.name == beat.ToString())
+				_fishObjects[(short)beat].Flash();
+			else
+			{
+				OnGameOver(false);
+				return;
+			}
+		}
+		OnGameOver(true);
+	}
 
 	private void _updatePlayerPosition(Vector2 movementInput)
 	{
-		print(movementInput);
-		_bobble.SetLocalPosition(movementInput);
+		_bobble.SetLocalPosition(movementInput * 5f);
 
 		switch (_state)
 		{
 			case State.VIEW:
-				_bobble.ClampPosition(.2f);
+				_bobble.ClampPosition(.25f);
 				break;
 			case State.PLAY:
-				_bobble.ClampPosition(1f);
+				_bobble.ClampPosition(2f);
 				break;
 		}
 	}
 
-	protected override void _onGameOver() { }
 	protected override void _onUpdate() { }
+	protected async override Task _onGameOver()
+	{
+		_ring.transform.localScale = Vector3.zero;
+		await Task.Delay(1000);
+
+		foreach (var fish in _fishObjects)
+			Destroy(fish.go);
+	}
 }

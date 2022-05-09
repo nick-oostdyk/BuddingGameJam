@@ -26,13 +26,14 @@ public abstract class FishingMinigame : MonoBehaviour
 	}
 
 	protected abstract void _onUpdate();
-	protected abstract void _onGameOver();
-	public void OnGameOver(bool success)
+	protected abstract System.Threading.Tasks.Task _onGameOver();
+	public async void OnGameOver(bool success)
 	{
-		Success = success;
-		_started = false;
+		await _onGameOver();
 
-		_onGameOver();
+		Success = success;
+		Complete = true;
+		_started = false;
 	}
 
 	private void OnEnable() => _action.Enable();
