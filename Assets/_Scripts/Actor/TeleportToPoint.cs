@@ -22,16 +22,16 @@ public class TeleportToPoint : MonoBehaviour
 
 	public async void Teleport()
 	{
-		var fade = FindObjectOfType<TeleportVignetteController>();
+		var fade = FindObjectOfType<CustomVignetteController>();
 		var player = FindObjectOfType<Player>();
 		var input = player.GetComponent<PlayerInputHandler>();
 
 		player.StopMovementImmediate();
 		input.enabled = false;
-		await fade.FadeOut();
+		await fade.FadeToBlack(1f);
 		
 		player.SetPosition(_telepoint.position);
-		await fade.FadeIn();
+		await fade.FadeFromBlack(1f);
 
 		input.enabled = true;
 	}

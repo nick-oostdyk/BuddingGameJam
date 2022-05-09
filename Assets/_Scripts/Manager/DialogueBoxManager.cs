@@ -51,7 +51,6 @@ public class DialogueBoxManager : MonoBehaviour
 		_textboxPanel.SetActive(false);
 
 		_textQueue = new Queue<(string, TextSequence)>();
-
 		//_pushExampleDialogue();
 	}
 
@@ -98,7 +97,7 @@ public class DialogueBoxManager : MonoBehaviour
 		// if there's no more text to display
 		if (_textQueue.Count == 0)
 		{
-			OnCurrentSequenceFinish?.Invoke();
+			_invokeSequenceFinished();
 			_textboxPanel.SetActive(false);
 			return;
 		}
@@ -116,6 +115,15 @@ public class DialogueBoxManager : MonoBehaviour
 	private void _setText(string body)
 	{
 		_text[(short)TextArea.BODY].text = body;
+	}
+
+	private void _invokeSequenceFinished()
+	{
+		OnCurrentSequenceFinish?.Invoke();
+
+		var delegates = OnCurrentSequenceFinish.GetInvocationList();
+		foreach (var action in delegates)
+			OnCurrentSequenceFinish -= (action as System.Action);
 	}
 
 	private void _pushExampleDialogue()
