@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class TextboxController : MonoBehaviour
+public class DialogueBoxManager : MonoBehaviour
 {
 	// singleton -----
-	private static TextboxController _i;
-	public static TextboxController Instance;
-
+	private static DialogueBoxManager _i;
+	public static DialogueBoxManager Instance => _i;
 	public void Awake()
 	{
 		if (_i == null) _i = this;
@@ -44,6 +43,8 @@ public class TextboxController : MonoBehaviour
 	private Queue<(string, TextSequence)> _textQueue;
 	private TextSequence _currentSequence => _textQueue.Peek().Item2;
 
+	public System.Action OnCurrentSequenceFinish;
+
 	private void Start()
 	{
 		_text = _textboxPanel.GetComponentsInChildren<TextMeshProUGUI>();
@@ -68,7 +69,6 @@ public class TextboxController : MonoBehaviour
 		// if current sequence is finished
 		if (_currentSequence.Index == _currentSequence.Sequence.Length)
 		{
-			print("Moving to next sequence");
 			_textQueue.Dequeue();
 			_beginNewSequence();
 		}
@@ -98,6 +98,7 @@ public class TextboxController : MonoBehaviour
 		// if there's no more text to display
 		if (_textQueue.Count == 0)
 		{
+			OnCurrentSequenceFinish?.Invoke();
 			_textboxPanel.SetActive(false);
 			return;
 		}
@@ -119,13 +120,13 @@ public class TextboxController : MonoBehaviour
 
 	private void _pushExampleDialogue()
 	{
-		TextboxController.Instance.PushText("Cass", "You can do it! Let's get it done, together!");
-		TextboxController.Instance.PushSquence("Nick", new TextSequence(new string[] {
+		DialogueBoxManager.Instance.PushText("Cass", "You can do it! Let's get it done, together!");
+		DialogueBoxManager.Instance.PushSquence("Nick", new TextSequence(new string[] {
 			"Man.",
 			"What are you talking about.",
 			"I'm all for the positivity, but let's just focus on the task."
 			}));
-		TextboxController.Instance.PushText("Cass", "-m-");
+		DialogueBoxManager.Instance.PushText("Cass", "-m-");
 	}
 
 	private void OnEnable() => _action.Enable();
