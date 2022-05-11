@@ -54,8 +54,6 @@ public class CraftingManager : MonoBehaviour
 			{
 				{ ItemType.FIBER, 8 },
 			}, (ItemType.ROPE, 3));
-
-
 	}
 }
 

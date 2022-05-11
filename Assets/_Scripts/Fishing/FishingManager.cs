@@ -48,15 +48,15 @@ public class FishingManager : MonoBehaviour
 
 	private async void _onFish()
 	{
-		var camSwitcher = FindObjectOfType<CinemachineStateSwitcher>();
 		var playerInput = _player.GetComponent<PlayerInputHandler>();
+		var fishLock = PlayerInputHandler.LockState.FISH;
 
 		_player.StopMovementImmediate();
-		playerInput.enabled = false;
+		playerInput.Lock(fishLock);
 
 		_fish = _fishArr[Random.Range(0, _fishArr.Length)];
 
-		camSwitcher.SwitchState(CameraState.FISHING_CAMERA);
+		GameManager.Instance.SetState(GameState.FISH);
 
 		await _playMinigames();
 
@@ -66,11 +66,11 @@ public class FishingManager : MonoBehaviour
 		_bobber.GetComponent<Animator>().SetTrigger("Release");
 		_bobber.SetActive(false);
 
-		// change to player camera
-		camSwitcher.SwitchState(CameraState.PLAYER_CAMERA);
+		// set state back to play
+		GameManager.Instance.SetState(GameState.PLAY);
 
 		await Task.Delay(1000);
-		playerInput.enabled = true;
+		playerInput.Unlock(fishLock);
 	}
 
 	private async Task _playMinigames()

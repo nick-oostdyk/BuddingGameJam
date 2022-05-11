@@ -77,8 +77,8 @@ public class DialogueBoxManager : MonoBehaviour
 			_setText(_currentSequence.Sequence[_currentSequence.Index]);
 	}
 
-	public void PushText(string head, string text) => PushSquence(head, new TextSequence(new string[] { text }));
-	public void PushSquence(string head, TextSequence sequence)
+	public void PushText(string head, string text) => PushSequence(head, new TextSequence(new string[] { text }));
+	public void PushSequence(string head, TextSequence sequence)
 	{
 		_textQueue.Enqueue((head, sequence));
 		_pushLive();
@@ -121,7 +121,8 @@ public class DialogueBoxManager : MonoBehaviour
 	{
 		OnCurrentSequenceFinish?.Invoke();
 
-		var delegates = OnCurrentSequenceFinish.GetInvocationList();
+		var delegates = OnCurrentSequenceFinish?.GetInvocationList();
+		if (delegates == null) return;
 		foreach (var action in delegates)
 			OnCurrentSequenceFinish -= (action as System.Action);
 	}
@@ -129,7 +130,7 @@ public class DialogueBoxManager : MonoBehaviour
 	private void _pushExampleDialogue()
 	{
 		DialogueBoxManager.Instance.PushText("Cass", "You can do it! Let's get it done, together!");
-		DialogueBoxManager.Instance.PushSquence("Nick", new TextSequence(new string[] {
+		DialogueBoxManager.Instance.PushSequence("Nick", new TextSequence(new string[] {
 			"Man.",
 			"What are you talking about.",
 			"I'm all for the positivity, but let's just focus on the task."

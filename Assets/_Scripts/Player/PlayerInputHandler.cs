@@ -19,6 +19,15 @@ public class PlayerInputHandler : MonoBehaviour
 		INTERACT = 0b1,
 	}
 
+	[System.Flags]
+	public enum LockState : short
+	{
+		NONE = 0b0,
+		SCENE = 0b1,
+		FISH = 0b1 << 1,
+	}
+	private LockState _lock;
+
 	private Player _player;
 
 	private InputState _inputState;
@@ -26,6 +35,7 @@ public class PlayerInputHandler : MonoBehaviour
 
 	private void Start()
 	{
+		_lock = LockState.NONE;
 		_player = GetComponent<Player>();
 
 		// clear inputs
@@ -36,6 +46,8 @@ public class PlayerInputHandler : MonoBehaviour
 	// read inputs
 	private void Update()
 	{
+		if (_lock != LockState.NONE) return;
+
 		if (_interactAction.WasPerformedThisFrame())
 			_inputState |= InputState.INTERACT;
 
@@ -54,6 +66,9 @@ public class PlayerInputHandler : MonoBehaviour
 		_inputState = 0;
 		_movementInput = Vector2.zero;
 	}
+
+	public void Lock(LockState flag) => _lock |= flag;
+	public void Unlock(LockState flag) => _lock &= ~flag;
 
 	private void OnEnable()
 	{

@@ -7,12 +7,33 @@ public class Player : Entity
 
 	public PromptObject PromptObject;
 	private IInteractable _interactTarget;
+	private PlayerInputHandler _controls;
 
 	private void Start()
 	{
+		GameManager.Instance.OnGameStateChanged += _stateChangeHandler;
+
 		InventoryWrapper = new PlayerInventory();
 
 		PromptObject = new PromptObject(transform);
+		_controls = GetComponent<PlayerInputHandler>();
+	}
+
+	private void _stateChangeHandler(GameState state)
+	{
+		var sceneLock = PlayerInputHandler.LockState.SCENE;
+		switch (state)
+		{
+			case GameState.PLAY:
+			case GameState.CAVE:
+				_controls.Unlock(sceneLock);
+				break;
+
+			default:
+				_controls.Lock(sceneLock);
+				break;
+
+		}
 	}
 
 	private void OnTriggerStay2D(Collider2D other)

@@ -6,6 +6,7 @@ public enum CameraState
 {
 	PLAYER_CAMERA,
 	FISHING_CAMERA,
+	CAVE_CAMERA,
 }
 
 public class CinemachineStateSwitcher : MonoBehaviour
@@ -16,8 +17,31 @@ public class CinemachineStateSwitcher : MonoBehaviour
 	{
 		{ CameraState.PLAYER_CAMERA, "PlayerCamera" },
 		{ CameraState.FISHING_CAMERA, "FishingCamera" },
+		{ CameraState.CAVE_CAMERA, "CaveCamera" },
 	};
-
-	private void Start() => _animator = GetComponent<Animator>();
 	public void SwitchState(CameraState state) => _animator.Play(_stateNames[state]);
+
+	private void Start()
+	{
+		_animator = GetComponent<Animator>();
+
+		GameManager.Instance.OnGameStateChanged += state => {
+
+			switch (state)
+			{
+				case GameState.FISH:
+					SwitchState(CameraState.FISHING_CAMERA);
+					break;
+
+				case GameState.CAVE:
+					SwitchState(CameraState.CAVE_CAMERA);
+					break;
+
+				default:
+					SwitchState(CameraState.PLAYER_CAMERA);
+					break;
+			}
+		};
+	}
+
 }

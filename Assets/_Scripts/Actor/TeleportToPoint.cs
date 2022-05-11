@@ -29,7 +29,10 @@ public class TeleportToPoint : MonoBehaviour
 		player.StopMovementImmediate();
 		input.enabled = false;
 		await fade.FadeToBlack(1f);
-		
+
+		var state = GameManager.Instance.State;
+		GameManager.Instance.SetState(state == GameState.PLAY ? GameState.CAVE : GameState.PLAY);
+
 		player.SetPosition(_telepoint.position);
 		await fade.FadeFromBlack(1f);
 
