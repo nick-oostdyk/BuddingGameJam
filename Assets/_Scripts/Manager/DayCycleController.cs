@@ -6,43 +6,62 @@ using UnityEngine.Rendering;
 public class DayCycleController : MonoBehaviour
 {
 	[SerializeField] private Volume _vignetteVolume;
-	[SerializeField] private float _dayLength = 333f;
 	[SerializeField] private bool _disable;
 
-	private float _dayStartTime;
-
 	private bool _dayStarting = false;
+	private float currWeight => _vignetteVolume.weight;
 
-	private void Start()
+	public void Awake()
 	{
-		StartDay();
+		TimeManager.Clock.OnDaytimeEvent += _handleDaytimeEvent;
+	}
+
+	private void _handleDaytimeEvent(TimeManager.Clock.DaytimeEvent evnt)
+	{
+		switch (evnt)
+		{
+			case TimeManager.Clock.DaytimeEvent.MORNING:
+				TweenToValue(.3f, 1f);
+				break;
+			case TimeManager.Clock.DaytimeEvent.NOON:
+				TweenToValue(.0f);
+				break;
+			case TimeManager.Clock.DaytimeEvent.EVENING:
+				TweenToValue(.3f);
+				break;
+			case TimeManager.Clock.DaytimeEvent.NIGHT:
+				TweenToValue(.5f);
+				break;
+			case TimeManager.Clock.DaytimeEvent.SLEEP:
+				TweenToValue(.9f, 1f);
+				break;
+		}
 	}
 
 	private void FixedUpdate()
 	{
 		if (_dayStarting) return;
 		if (_disable) return;
-
-		float progressIntoDay = TimeManager.TimeSinceStart - _dayStartTime;
-		var progressAsPercent = progressIntoDay / _dayLength;
-		_vignetteVolume.weight = progressAsPercent;
-
-		if (progressAsPercent > 1f)
-			StartDay();
 	}
 
-	public async void StartDay()
+	public async void TweenToValue(float value, float durationSeconds = 5f)
 	{
-		_dayStarting = true;
+		print($"tweening to value {value} from value {currWeight}");
 
-		for (float i = _vignetteVolume.weight; i > 0; i -= 0.01f)
+		var frameTimeMS = 4;
+		var dtSeconds = frameTimeMS * 0.001f;
+		var iterations = durationSeconds / dtSeconds;
+
+		var startingValue = currWeight;
+
+		var delta = (1f / iterations) * (value - startingValue);
+
+		for (int i = 0; i < iterations; ++i)
 		{
-			_vignetteVolume.weight = i;
-			await System.Threading.Tasks.Task.Delay(15);
+			_vignetteVolume.weight = startingValue + i * delta;
+			await System.Threading.Tasks.Task.Delay(frameTimeMS);
 		}
-
-		_dayStartTime = TimeManager.TimeSinceStart;
-		_dayStarting = false;
+		_vignetteVolume.weight = value;
 	}
 
 }

@@ -11,6 +11,18 @@ public enum GameState
 	PLAY,
 	FISH,
 	CAVE,
+	SLEEP,
+}
+
+[System.Flags]
+public enum Flags : int
+{
+	NONE = 0b0,
+	TOOL_ONE = 0b1,
+	TOOL_TWO = 0b1 << 1,
+	FISH_ROD = 0b1 << 2,
+
+	CAVE_PROMPT = 0b1 << 3,
 }
 
 public class GameManager : MonoBehaviour
@@ -32,9 +44,18 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Animator _gameStartCutscene;
 	[SerializeField] private ToggleUI _timerToggle;
 
+	[SerializeField] private bool _playCutscene = true;
+
 	private void Start()
 	{
-		_playOpening();
+		if (_playCutscene)
+			_playOpening();
+		else
+		{
+			SetState(GameState.PLAY);
+			TimeManager.StartTimer();
+			_timerToggle.Toggle();
+		}
 	}
 
 	public void SetState(GameState state)
