@@ -31,4 +31,9 @@ public class SceneChangeHandler : MonoBehaviour
 		await Task.Delay(delayMS);
 		LoadScene(sceneName);
 	}
+
+	public void Quit()
+    {
+		Application.Quit();
+    }
 }
