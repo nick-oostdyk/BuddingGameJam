@@ -8,6 +8,7 @@ public class Player : Entity
 	public PromptObject PromptObject;
 	private IInteractable _interactTarget;
 	private PlayerInputHandler _controls;
+	private GameObject _tool;
 
 	private void Start()
 	{
@@ -17,6 +18,9 @@ public class Player : Entity
 
 		PromptObject = new PromptObject(transform);
 		_controls = GetComponent<PlayerInputHandler>();
+
+		_tool = GameObject.Find("/Player/ToolHandle/Tool");
+		_tool.GetComponent<SpriteRenderer>().enabled = false;
 	}
 
 	private void _stateChangeHandler(GameState state)
@@ -53,7 +57,13 @@ public class Player : Entity
 
 	public void Interact()
 	{
-		if (_interactTarget == null) return;
+		if (_interactTarget == null)	return;
+
+		// enable tool during interact & play anim
+		// not sure how to disable after the anim but wip
+		_tool.GetComponent<SpriteRenderer>().enabled = true;
+		GetComponent<Animator>().Play("WeaponLayer.SwingTool");
+
 		_interactTarget.Interact();
 	}
 
