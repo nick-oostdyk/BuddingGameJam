@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-	private static float _timeScale = 8f;
+	private static float _timeScale = 1f;
 	private static float _timeStart = 0f;
 
 	private static bool _started;

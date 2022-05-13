@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class Player : Entity
 {
 	public static PlayerInventory InventoryWrapper;
 
+	[SerializeField] private SpriteRenderer _toolSR;
+
 	public PromptObject PromptObject;
 	private IInteractable _interactTarget;
 	private PlayerInputHandler _controls;
-	private GameObject _tool;
+	private Animator _animator;
 
 	private void Start()
 	{
@@ -18,9 +21,7 @@ public class Player : Entity
 
 		PromptObject = new PromptObject(transform);
 		_controls = GetComponent<PlayerInputHandler>();
-
-		_tool = GameObject.Find("/Player/ToolHandle/Tool");
-		_tool.GetComponent<SpriteRenderer>().enabled = false;
+		_animator = GetComponent<Animator>();
 	}
 
 	private void _stateChangeHandler(GameState state)
@@ -36,7 +37,6 @@ public class Player : Entity
 			default:
 				_controls.Lock(sceneLock);
 				break;
-
 		}
 	}
 
@@ -55,14 +55,44 @@ public class Player : Entity
 		_interactTarget = null;
 	}
 
-	public void Interact()
+	public async void Interact()
 	{
-		if (_interactTarget == null)	return;
+		if (_interactTarget is null) return;
 
-		// enable tool during interact & play anim
-		// not sure how to disable after the anim but wip
-		_tool.GetComponent<SpriteRenderer>().enabled = true;
-		GetComponent<Animator>().Play("WeaponLayer.SwingTool");
+		var numSwings = 0;
+		var r = (Resource)_interactTarget;
+		if (r is not null)
+		{
+			switch (r.Type)
+			{
+				case ResourceType.STONE:
+				case ResourceType.FIBER:
+				case ResourceType.DRIFTWOOD:
+					numSwings = 1;
+					break;
+				case ResourceType.BOULDER:
+					numSwings = 2;
+					break;
+				case ResourceType.TREE:
+					numSwings = 3;
+					break;
+			}
+
+			GameManager.Instance.SetState(GameState.HARVEST);
+			_toolSR.enabled = true;
+			_animator.Play("SwingTool", 1);
+
+			while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
+				await Task.Yield();
+
+			while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
+				await Task.Yield();
+
+			_animator.SetTrigger("FinishInteract");
+			_toolSR.enabled = false;
+
+			GameManager.Instance.SetState(GameState.PLAY);
+		}
 
 		_interactTarget.Interact();
 	}
