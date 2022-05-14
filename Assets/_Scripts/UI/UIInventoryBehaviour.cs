@@ -25,13 +25,11 @@ public class UIInventoryBehaviour : MonoBehaviour
 
 	private void _setInventory(Dictionary<ItemType, int> _inventory)
 	{
+		// instantiates a ui prefab that holds item info
 		foreach (var (key, value) in _inventory)
 			Instantiate(_inventoryItemPrefab, transform)
 				.GetComponent<UIInventoryItemBehaviour>().Init($"{key.ToString().ToLower()}", $"x{value}");
 	}
 
-	private void OnDestroy()
-	{
-		PlayerInventory.OnPlayerInventoryChange -= _updateInventory;
-	}
+	private void OnDestroy() => PlayerInventory.OnPlayerInventoryChange -= _updateInventory;
 }

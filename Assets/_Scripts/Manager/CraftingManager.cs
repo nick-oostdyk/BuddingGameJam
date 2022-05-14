@@ -57,6 +57,8 @@ public class CraftingManager : MonoBehaviour
 	}
 }
 
+// holds a dictionary of items & values for crafting recipes
+// and also contains functions to execute the craft
 public class CraftingRecipe
 {
 	public Dictionary<ItemType, int> Recipe { get; private set; }
@@ -69,6 +71,7 @@ public class CraftingRecipe
 		CraftingManager.Recipes.Add(this);
 	}
 
+	// checks if the player has all of the requisite items in their inventory
 	public bool CheckIfCanCraft()
 	{
 		var canCraft = true;
@@ -84,6 +87,7 @@ public class CraftingRecipe
 		return canCraft;
 	}
 
+	// attempts to craft the item, and put it in the players inventory
 	public void TryCraft()
 	{
 		if (!CheckIfCanCraft()) return;
@@ -92,6 +96,30 @@ public class CraftingRecipe
 			Player.InventoryWrapper.ModifyQuantity(key, -value);
 
 		Player.InventoryWrapper.ModifyQuantity(Result.Item1, Result.Item2);
+
+		switch (Result.Item1)
+		{
+			case ItemType.BASIC_MULTI_TOOL:
+				break;
+			case ItemType.ADVANCED_MULTI_TOOL:
+				break;
+			case ItemType.FISHING_ROD:
+				break;
+			case ItemType.SHELTER:
+				break;
+			case ItemType.FIREPIT:
+				break;
+			case ItemType.ANIMAL_TRAP:
+				break;
+			case ItemType.WATER_PURIFIER:
+				break;
+			case ItemType.FURNACE:
+				break;
+			case ItemType.NUM_ITEMS:
+				break;
+			default:
+				break;
+		}
 
 		Debug.Log($"Crafted {Result.Item1}");
 	}

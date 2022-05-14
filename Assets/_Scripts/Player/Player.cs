@@ -57,12 +57,16 @@ public class Player : Entity
 
 	public async void Interact()
 	{
+		// if there is no interact target return
 		if (_interactTarget is null) return;
 
-		var numSwings = 0;
+		// if the interact target is a resource
 		var r = (Resource)_interactTarget;
 		if (r is not null)
 		{
+			int numSwings = 0;
+
+			// check how many swings for the resource
 			switch (r.Type)
 			{
 				case ResourceType.STONE:
@@ -78,19 +82,24 @@ public class Player : Entity
 					break;
 			}
 
+			// swing anim & player input lock
 			GameManager.Instance.SetState(GameState.HARVEST);
 			_toolSR.enabled = true;
 			_animator.Play("SwingTool", 1);
 
+			// wait for anim to start
 			while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
 				await Task.Yield();
 
+			// wait for anim to finish
 			while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
 				await Task.Yield();
 
+			// set end anim trigger and hide tool
 			_animator.SetTrigger("FinishInteract");
 			_toolSR.enabled = false;
 
+			// re-enable player input
 			GameManager.Instance.SetState(GameState.PLAY);
 		}
 
@@ -151,6 +160,7 @@ public class PromptObject
 		SetEnabled(false);
 	}
 
+	// actually just hides it
 	public void SetEnabled(bool enabled)
 	{
 		Enabled = enabled;

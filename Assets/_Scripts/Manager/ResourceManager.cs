@@ -26,11 +26,14 @@ public class ResourceManager : MonoBehaviour
 	{
 		if (resource == null) return;
 
+		// give player resource drops
 		_resourceDropTable.RollAndSet(resource.Type);
 		resource.gameObject.SetActive(false);
 
+		// wait for resource to respawn
 		await Task.Delay(Random.Range(_minSpawnTimeMS, _maxSpawnTimeMS));
 
+		// respawn resource
 		if (resource == null) return;
 		resource.gameObject.SetActive(true);
 	}

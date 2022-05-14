@@ -1,7 +1,4 @@
 ﻿public class FishingGameBobble : FishingGameEntity
 {
-	protected override void _onStart()
-	{
-	}
-
+	// sit here and look pretty :)
 }

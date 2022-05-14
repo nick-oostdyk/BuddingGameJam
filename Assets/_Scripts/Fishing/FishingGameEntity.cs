@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// subset of entity class that adds function to clamp local position
 public class FishingGameEntity : Entity
 {
 	protected SpriteRenderer _sr;
@@ -7,6 +8,7 @@ public class FishingGameEntity : Entity
 
 	protected virtual void _onStart() => _sr = GetComponent<SpriteRenderer>();
 
+	// clamps x and y position to -clampTo, clampTo
 	public void ClampPosition(float clampTo)
 	{
 		var localPos = transform.localPosition;

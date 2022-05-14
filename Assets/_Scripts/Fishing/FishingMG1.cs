@@ -56,6 +56,6 @@ public class FishingMG1 : FishingMinigame
 
 		var (playerComplete, fishComplete) = (_playerBar.Progress == 1f, _fishBar.Progress == 1f);
 		
-		if (playerComplete || fishComplete)  OnGameOver(playerComplete);
+		if (playerComplete || fishComplete) OnGameOver(playerComplete);
 	}
 }

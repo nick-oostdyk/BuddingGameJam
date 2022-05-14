@@ -19,12 +19,14 @@ public class PlayerInputHandler : MonoBehaviour
 		INTERACT = 0b1,
 	}
 
+	// bitflag for different ways to lock the input
 	[System.Flags]
 	public enum LockState : short
 	{
 		NONE = 0b0,
 		SCENE = 0b1,
 		FISH = 0b1 << 1,
+		TELEPORT = 0b1 << 2,
 	}
 	private LockState _lock;
 

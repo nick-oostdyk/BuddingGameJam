@@ -9,6 +9,8 @@ public enum CameraState
 	CAVE_CAMERA,
 }
 
+// handles which camera is active by setting the animation state
+// camera changes happen on state changes
 public class CinemachineStateSwitcher : MonoBehaviour
 {
 	private Animator _animator;

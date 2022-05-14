@@ -29,6 +29,7 @@
 	NUM_ITEMS
 }
 
+// hehe look at my fishing minigame :DD
 public enum FishType
 {
 	BLUE_GUPPY,

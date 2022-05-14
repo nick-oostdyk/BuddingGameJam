@@ -16,6 +16,7 @@ public class DayCycleController : MonoBehaviour
 		TimeManager.Clock.OnDaytimeEvent += _handleDaytimeEvent;
 	}
 
+	// when the time changes tween to the brightness of the new time
 	private void _handleDaytimeEvent(TimeManager.Clock.DaytimeEvent evnt)
 	{
 		switch (evnt)
@@ -36,12 +37,6 @@ public class DayCycleController : MonoBehaviour
 				TweenToValue(.9f, 1f);
 				break;
 		}
-	}
-
-	private void FixedUpdate()
-	{
-		if (_dayStarting) return;
-		if (_disable) return;
 	}
 
 	public async void TweenToValue(float value, float durationSeconds = 5f)

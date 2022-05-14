@@ -29,13 +29,18 @@ public class FishingManager : MonoBehaviour
 		_releasePoint = _player.transform.Find("FishingReleasePoint");
 		_bobber = transform.GetChild(0).gameObject;
 
+		// hide everything
 		_bobber.SetActive(false);
 		_minigames[0].gameObject.SetActive(false);
 		_minigames[1].gameObject.SetActive(false);
 
+		// grab all fish assets
 		_fishArr = Resources.LoadAll<FishItem>("ScriptableObjects/Fish");
-		GetComponent<FishingSpot>().OnInteract += (s, a) => _onFish();
 
+		// add fishing behaviour to interact event
+		GetComponent<FishingSpot>().OnInteract += (s, a) => _onFish(); 
+
+		// add event to action for when player can reel in the fish
 		_reelAction.performed += _ => {
 			if (_canReel && _onBiteCoEnum != null)
 			{
@@ -58,6 +63,7 @@ public class FishingManager : MonoBehaviour
 
 		GameManager.Instance.SetState(GameState.FISH);
 
+		// wait for the minigames to finish
 		await _playMinigames();
 
 		// give player fish
@@ -66,7 +72,7 @@ public class FishingManager : MonoBehaviour
 		_bobber.GetComponent<Animator>().SetTrigger("Release");
 		_bobber.SetActive(false);
 
-		// set state back to play
+		// set game state back to play
 		GameManager.Instance.SetState(GameState.PLAY);
 
 		await Task.Delay(1000);
@@ -134,12 +140,15 @@ public class FishingManager : MonoBehaviour
 
 	private async Task<bool> _playGame(FishingMinigame game)
 	{
+		// setup game
 		game.gameObject.SetActive(true);
 		game.Init(_fish);
 
+		// wait for the game to finish
 		while (!game.Complete)
 			await Task.Yield();
 
+		// close game & return success or nah
 		game.gameObject.SetActive(false);
 		return game.Success;
 	}

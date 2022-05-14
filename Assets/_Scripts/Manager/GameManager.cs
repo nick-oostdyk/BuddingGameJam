@@ -27,6 +27,7 @@ public enum Flags : int
 
 public class GameManager : MonoBehaviour
 {
+	// singleton pattern -----
 	private static GameManager _i;
 	public static GameManager Instance => _i;
 
@@ -35,8 +36,10 @@ public class GameManager : MonoBehaviour
 		if (_i == null) _i = this;
 		else Destroy(this);
 	}
+	// -----
 
 	public GameState State { get; private set; }
+	public Flags GameFlags { get; private set; }
 	public System.Action<GameState> OnGameStateChanged;
 
 	private Player _player;
@@ -48,7 +51,7 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-		if (_playCutscene)
+		if (_playCutscene) // debug ahoy
 			_playOpening();
 		else
 		{
@@ -77,15 +80,18 @@ public class GameManager : MonoBehaviour
 
 		SetState(GameState.CUTSCENE);
 
+		// move player to cutscene location
 		_player = FindObjectOfType<Player>();
 		_player.transform.position = _playerSpawnPosition.position;
 
+		// push opening dialogue
 		dialogueBox.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
 			"You wake up.",
 			"You feel sand sticking to your skin.",
 			"The sun is beating down on your face."
 			}));
 
+		// play paper plane cutscene after dialogue is finished
 		dialogueBox.OnCurrentSequenceFinish += _playCutsceneOne;
 	}
 
@@ -94,12 +100,15 @@ public class GameManager : MonoBehaviour
 		var dialogueBox = DialogueBoxManager.Instance;
 		var vignetteController = FindObjectOfType<CustomVignetteController>();
 
+		// fade in
 		await vignetteController.FadeFromBlack(1.5f);
 		_gameStartCutscene.Play("GameStart");
 
+		// wait for animation to start
 		while (!_gameStartCutscene.GetCurrentAnimatorStateInfo(0).IsName("GameStart"))
 			await Task.Yield();
 
+		// wait for animation to end
 		while (_gameStartCutscene.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
 			await Task.Yield();
 
@@ -111,16 +120,20 @@ public class GameManager : MonoBehaviour
 				"IN THREE DAYS",
 				}));
 
+		// allow player movement after sequence finishes
 		dialogueBox.OnCurrentSequenceFinish += () => {
 			SetState(GameState.PLAY);
 			TimeManager.StartTimer();
 			_timerToggle.Toggle();
+
+			// play additional help text after 3.5s 
 			Util.DelayRunAction(3500, () => _pushGameStartHelp());
 		};
 	}
 
 	private void _pushGameStartHelp()
 	{
+		// additional help text
 		var dialogueBox = DialogueBoxManager.Instance;
 		dialogueBox.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
 				"How am I supposed to survive for three days?",

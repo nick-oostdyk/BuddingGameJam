@@ -23,6 +23,7 @@ public class FishingMG2 : FishingMinigame
 		NO_OF_BEATS,
 	}
 
+	// the sprite that flashes white in Fishing phase 3
 	private class FishObject
 	{
 		public GameObject go { get; private set; }
@@ -39,6 +40,7 @@ public class FishingMG2 : FishingMinigame
 
 		public async void Flash()
 		{
+			// math
 			var frameTimeMS = 4;
 			var dtSeconds = frameTimeMS * .001f;
 			var riseDurationSeconds = .1f;
@@ -76,6 +78,7 @@ public class FishingMG2 : FishingMinigame
 		{
 			go.name = ((Beat)index).ToString();
 
+			// position
 			var theta = (index + 1) * Mathf.PI / 2;
 			Vector3 offset = Vector3.zero;
 			offset.x = Mathf.Cos(theta);
@@ -84,25 +87,30 @@ public class FishingMG2 : FishingMinigame
 			go.transform.parent = parent.transform;
 			go.transform.position = parent.transform.position + offset;
 			go.transform.localScale = Vector3.one;
-
+			
+			// sprite renderer
 			var sr = go.AddComponent<SpriteRenderer>();
 			sr.color = Color.black;
 			sr.sprite = sprite;
 			sr.sortingLayerName = "Foreground";
 			sr.sortingOrder = 15;
 
+			// collider
 			col = go.AddComponent<CircleCollider2D>();
 			col.isTrigger = true;
 			col.radius = .5f;
 		}
 
+		// this is the sprite with the whiteout material that overlays the fish
 		private void _buildChild(Sprite sprite, Material whiteMat)
 		{
+			// position & parent
 			var child = new GameObject();
 			child.transform.parent = go.transform;
 			child.transform.position = go.transform.position;
 			child.transform.localScale = Vector3.one;
 
+			// sprite renderer
 			_childRenderer = child.AddComponent<SpriteRenderer>();
 			_childRenderer.color = Color.clear;
 			_childRenderer.sprite = sprite;
@@ -130,10 +138,8 @@ public class FishingMG2 : FishingMinigame
 		await _playGame();
 	}
 
-	private void FixedUpdate()
-	{
-		_updatePlayerPosition(_action.ReadValue<Vector2>());
-	}
+	// tick player
+	private void FixedUpdate() => _updatePlayerPosition(_action.ReadValue<Vector2>());
 
 	private void _generateFishObjects()
 	{
@@ -144,6 +150,7 @@ public class FishingMG2 : FishingMinigame
 			_fishObjects[i] = new FishObject(transform, sprite, _whiteoutMaterial, i);
 	}
 
+	// creates a random pattern of beats
 	private void _generateBeatPattern()
 	{
 		_pattern = new Beat[_fishItem.NumBeats];
@@ -151,6 +158,7 @@ public class FishingMG2 : FishingMinigame
 			_pattern[i] = (Beat)Random.Range(0, 4);
 	}
 
+	// displays the pattern
 	private async Task _viewPattern()
 	{
 		var beatQueue = new Queue<Beat>(_pattern);
@@ -162,10 +170,12 @@ public class FishingMG2 : FishingMinigame
 		await Task.Delay(800);
 	}
 
+	// now its the players turn
 	private async Task _playGame()
 	{
 		_state = State.PLAY;
 
+		// create a queue from the pattern generated earlier
 		var beatQueue = new Queue<Beat>(_pattern);
 
 		var msPerFrame = 10;
@@ -187,15 +197,18 @@ public class FishingMG2 : FishingMinigame
 				await Task.Delay(msPerFrame);
 			}
 
+			// this is the moment where the ring hits its max size
 			var hit = Physics2D.OverlapCircle(_bobble.transform.position, .5f);
 			if (hit != null && hit.name == beat.ToString())
 				_fishObjects[(short)beat].Flash();
 			else
 			{
+				// if the player misses the beat
 				OnGameOver(false);
 				return;
 			}
 		}
+		// if the player succeeded
 		OnGameOver(true);
 	}
 

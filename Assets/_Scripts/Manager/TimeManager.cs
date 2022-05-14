@@ -54,6 +54,7 @@ public class TimeManager : MonoBehaviour
 			_setTime(DaytimeEvent.MORNING);
 		}
 
+		// check if the time should advance to the next time period
 		public static void TickTock()
 		{
 			switch (_time)
@@ -80,12 +81,14 @@ public class TimeManager : MonoBehaviour
 			}
 		}
 
+		// starts the day when morning is triggered
 		private static void _onMorningHandler(DaytimeEvent evnt)
 		{
 			if (evnt != DaytimeEvent.MORNING) return;
 			_dayStart = TimeSinceStart;
 		}
 
+		// sets playe to sleep when sleep is triggered
 		private static async void _onSleepHandler(DaytimeEvent evnt)
 		{
 			if (evnt != DaytimeEvent.SLEEP) return;

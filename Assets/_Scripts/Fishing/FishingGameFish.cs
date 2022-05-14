@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// fish entity from fishing phase 2
 public class FishingGameFish : FishingGameEntity
 {
 	public FishItem FishItem;

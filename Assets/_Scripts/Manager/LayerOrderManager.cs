@@ -40,10 +40,13 @@ public class LayerOrderManager : MonoBehaviour
 
 	public void RebuildLayeredObjectList()
 	{
+		// empty the list
 		_layerOrderObjects.Clear();
 
+		// grab all the layerorder objects in the scene
 		var objects = GameObject.FindGameObjectsWithTag("LayerOrder");
 
+		// add them to the list & set their layer order
 		foreach (var obj in objects)
 		{
 			_layerOrderObjects.Add(obj.transform);

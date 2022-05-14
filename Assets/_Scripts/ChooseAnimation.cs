@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// picks a random animation from an array set in the inspector
 public class ChooseAnimation : MonoBehaviour
 {
 	private Animator _anim;

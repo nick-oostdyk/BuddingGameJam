@@ -15,6 +15,7 @@ public class UICraftingBehaviour : MonoBehaviour
 
 	private void _updateCraftingMenu(Dictionary<ItemType, int> _inventory)
 	{
+		// toggle if crafting menu item is interactable
 		var recipes = CraftingManager.Recipes;
 
 		for (int i = 0; i < recipes.Count; ++i)
@@ -23,12 +24,14 @@ public class UICraftingBehaviour : MonoBehaviour
 
 	private void _clearCraftingMenu()
 	{
+		// remove everything from the menu
 		foreach (Transform child in transform)
 			Destroy(child.gameObject);
 	}
 
 	private void _populateCraftingMenu()
 	{
+		// add all of the recipes in the game to the menu
 		foreach (var recipe in CraftingManager.Recipes)
 		{
 			var item = Instantiate(_UICraftingItemPrefab, transform);
@@ -39,8 +42,5 @@ public class UICraftingBehaviour : MonoBehaviour
 		}
 	}
 
-	private void OnDestroy()
-	{
-		PlayerInventory.OnPlayerInventoryChange -= _updateCraftingMenu;
-	}
+	private void OnDestroy() => PlayerInventory.OnPlayerInventoryChange -= _updateCraftingMenu;
 }
