@@ -17,4 +17,7 @@ MonoBehaviour:
   SwimSpeed: 3
   PlayerFillTime: 2.5
   FishFillTime: 4.5
+  PerlinStep: 1
+  ZoneSize: 1.5
   NumBeats: 3
+  NoteTime: 0.6

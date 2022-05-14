@@ -20,5 +20,5 @@ public class FishItem : ScriptableObject
 	[Header("Minigame 2")]
 	[SerializeField] public int NumBeats;
 	[Range(.4f, 1f)]
-	[SerializeField] public int NoteTime;
+	[SerializeField] public float NoteTime;
 }

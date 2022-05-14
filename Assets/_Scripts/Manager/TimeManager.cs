@@ -88,7 +88,7 @@ public class TimeManager : MonoBehaviour
 			_dayStart = TimeSinceStart;
 		}
 
-		// sets playe to sleep when sleep is triggered
+		// sets player to sleep when sleep is triggered
 		private static async void _onSleepHandler(DaytimeEvent evnt)
 		{
 			if (evnt != DaytimeEvent.SLEEP) return;

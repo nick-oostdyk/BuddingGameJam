@@ -20,6 +20,7 @@ public class FishingGameFish : FishingGameEntity
 
 		_collider = GetComponent<Collider2D>();
 		_zoneCollider = GameObject.FindGameObjectWithTag("InZone").GetComponent<Collider2D>();
+		_zoneCollider.transform.localScale = new Vector3(fish.ZoneSize, 1f, 1f);
 	}
 
 	public bool GetIsInZone() => _collider.IsTouching(_zoneCollider);

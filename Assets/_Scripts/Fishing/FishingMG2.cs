@@ -161,13 +161,15 @@ public class FishingMG2 : FishingMinigame
 	// displays the pattern
 	private async Task _viewPattern()
 	{
+		var noteTime = _fishItem.NoteTime;
+
 		var beatQueue = new Queue<Beat>(_pattern);
 		foreach (var beat in beatQueue)
 		{
-			await Task.Delay(800);
+			await Task.Delay(Mathf.RoundToInt(noteTime * 1000));
 			_fishObjects[(short)beat].Flash();
 		}
-		await Task.Delay(800);
+		await Task.Delay(Mathf.RoundToInt(noteTime * 1000));
 	}
 
 	// now its the players turn
@@ -181,7 +183,7 @@ public class FishingMG2 : FishingMinigame
 		var msPerFrame = 10;
 		var dtSeconds = msPerFrame * 0.001f;
 
-		var noteDurationSeconds = .8f;
+		var noteDurationSeconds = _fishItem.NoteTime;
 		var numIters = noteDurationSeconds / dtSeconds;
 
 		var deltaScale = 1f / numIters;

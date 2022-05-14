@@ -30,8 +30,9 @@ public class FishingMG1 : FishingMinigame
 	private Vector2 _getDirection()
 	{
 		// perlin
+		var perlinStep = _fishItem.PerlinStep;
 		var direction = Vector2.right;
-		var influence = 2f * Mathf.PerlinNoise(Time.time * 1.2f, 0f) - 1f;
+		var influence = 2f * Mathf.PerlinNoise(Time.time * perlinStep, 0f) - 1f;
 
 		// will to escape
 		var fishLocalPos = _fish.transform.localPosition;

@@ -61,7 +61,7 @@ public class Player : Entity
 		if (_interactTarget is null) return;
 
 		// if the interact target is a resource
-		var r = (Resource)_interactTarget;
+		var r = _interactTarget as Resource;
 		if (r is not null)
 		{
 			int numSwings = 0;
