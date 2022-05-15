@@ -61,47 +61,50 @@ public class Player : Entity
 		if (_interactTarget is null) return;
 
 		// if the interact target is a resource
-		var r = _interactTarget as Resource;
-		if (r is not null)
-		{
-			int numSwings = 0;
+		try {
+			var r = _interactTarget as Resource;
 
-			// check how many swings for the resource
-			switch (r.Type)
+			if (r is not null)
 			{
-				case ResourceType.STONE:
-				case ResourceType.FIBER:
-				case ResourceType.DRIFTWOOD:
-					numSwings = 1;
-					break;
-				case ResourceType.BOULDER:
-					numSwings = 2;
-					break;
-				case ResourceType.TREE:
-					numSwings = 3;
-					break;
+				int numSwings = 0;
+				// check how many swings for the resource
+				switch (r.Type)
+				{
+					case ResourceType.STONE:
+					case ResourceType.FIBER:
+					case ResourceType.DRIFTWOOD:
+						numSwings = 1;
+						break;
+					case ResourceType.BOULDER:
+						numSwings = 2;
+						break;
+					case ResourceType.TREE:
+						numSwings = 3;
+						break;
+				}
+
+				// swing anim & player input lock
+				GameManager.Instance.SetState(GameState.HARVEST);
+				_toolSR.enabled = true;
+				_animator.Play("SwingTool", 1);
+
+				// wait for anim to start
+				while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
+					await Task.Yield();
+
+				// wait for anim to finish
+				while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
+					await Task.Yield();
+
+				// set end anim trigger and hide tool
+				_animator.SetTrigger("FinishInteract");
+				_toolSR.enabled = false;
+
+				// re-enable player input
+				GameManager.Instance.SetState(GameState.PLAY);
 			}
-
-			// swing anim & player input lock
-			GameManager.Instance.SetState(GameState.HARVEST);
-			_toolSR.enabled = true;
-			_animator.Play("SwingTool", 1);
-
-			// wait for anim to start
-			while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
-				await Task.Yield();
-
-			// wait for anim to finish
-			while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
-				await Task.Yield();
-
-			// set end anim trigger and hide tool
-			_animator.SetTrigger("FinishInteract");
-			_toolSR.enabled = false;
-
-			// re-enable player input
-			GameManager.Instance.SetState(GameState.PLAY);
 		}
+		catch (System.Exception e) { print(e.Message); }
 
 		_interactTarget.Interact();
 	}
