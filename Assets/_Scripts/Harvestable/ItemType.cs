@@ -19,11 +19,11 @@
 	FISHING_ROD, // i will destroy everything and everyone if you do not let me make a fishing minigame
 
 	// structures
-	SHELTER,
 	FIREPIT,
-	ANIMAL_TRAP,
-	WATER_PURIFIER,
+	CRAFTING_STATION,
 	FURNACE,
+	WATER_PURIFIER,
+	FISH_DISPLAY,
 
 	//
 	NUM_ITEMS

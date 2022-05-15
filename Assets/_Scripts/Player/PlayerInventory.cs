@@ -44,8 +44,9 @@ public class PlayerInventory
 			.OrderBy(item => (int)item.Key)
 			.ToDictionary(item => item.Key, item => item.Value);
 
-		var list = GameObject.FindObjectsOfType<GameObject>().Where(i => i.CompareTag("RenderPositionCheck"));
-		list = list.OrderBy(i => i.transform.position.y);
+		// idk if this is actually doing anything but i found it in the code
+		//var list = GameObject.FindObjectsOfType<GameObject>().Where(i => i.CompareTag("RenderPositionCheck"));
+		//list = list.OrderBy(i => i.transform.position.y);
 	}
 
 	public void Print()

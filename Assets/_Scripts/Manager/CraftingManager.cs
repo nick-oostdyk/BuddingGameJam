@@ -100,16 +100,15 @@ public class CraftingRecipe
 		switch (Result.Item1)
 		{
 			case ItemType.BASIC_MULTI_TOOL:
+				GameManager.Instance.AddGameFlag(GameFlag.TOOL_ONE);
 				break;
 			case ItemType.ADVANCED_MULTI_TOOL:
+				GameManager.Instance.AddGameFlag(GameFlag.TOOL_TWO);
 				break;
 			case ItemType.FISHING_ROD:
-				break;
-			case ItemType.SHELTER:
+				GameManager.Instance.AddGameFlag(GameFlag.FISH_ROD);
 				break;
 			case ItemType.FIREPIT:
-				break;
-			case ItemType.ANIMAL_TRAP:
 				break;
 			case ItemType.WATER_PURIFIER:
 				break;

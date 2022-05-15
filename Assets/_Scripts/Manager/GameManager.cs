@@ -15,7 +15,7 @@ public enum GameState
 }
 
 [System.Flags]
-public enum Flags : int
+public enum GameFlag : int
 {
 	NONE = 0b0,
 	TOOL_ONE = 0b1,
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 	// -----
 
 	public GameState State { get; private set; }
-	public Flags GameFlags { get; private set; }
+	public GameFlag GameFlags { get; private set; }
 	public System.Action<GameState> OnGameStateChanged;
 
 	private Player _player;
@@ -68,6 +68,9 @@ public class GameManager : MonoBehaviour
 		print($"new state {state}");
 		OnGameStateChanged?.Invoke(state);
 	}
+
+	public void AddGameFlag(GameFlag flag) => GameFlags |= flag;
+	public void RmGameFlag(GameFlag flag) => GameFlags &= ~flag;
 
 	private async void _playOpening()
 	{
