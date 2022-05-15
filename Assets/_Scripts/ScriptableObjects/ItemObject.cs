@@ -11,8 +11,20 @@ public class ItemObject : ScriptableObject
 [System.Serializable]
 public class ItemStack
 {
-	[SerializeField] public ItemObject Item;
+	[SerializeField] public ItemType Item;
 	[SerializeField] public int Amount;
+
+	public ItemStack()
+	{
+		Item = ItemType.NUM_ITEMS;
+		Amount = 0;
+	}
+
+	public ItemStack(ItemType type, int amount = 1)
+	{
+		Item = type;
+		Amount = amount;
+	}
 }
 
 [System.Serializable]
@@ -27,13 +39,17 @@ public class DropTablePacket
 		Rolls = 0;
 	}
 
-	public DropTablePacket(DropTablePacket otherPacket)
+	public DropTablePacket(DropTablePacket packet)
 	{
-		Packet = new List<ItemStack>(otherPacket.Packet);
-		Rolls = otherPacket.Rolls;
+		Packet = new List<ItemStack>(packet.Packet);
+		Rolls = packet.Rolls;
 	}
 
-
+	public DropTablePacket(List<ItemStack> packet, int rolls)
+	{
+		Packet = new List<ItemStack>(packet);
+		Rolls = rolls;
+	}
 }
 
 [System.Serializable]
@@ -41,6 +57,10 @@ public class DropTable
 {
 	[SerializeField] public List<DropTablePacket> DropPackets;
 
+	public DropTable() => DropPackets = new List<DropTablePacket>();
+	public DropTable(List<DropTablePacket> list) => DropPackets = new List<DropTablePacket>(list);
+
+	public void RollAndSet() => Player.InventoryWrapper.ModifyQuantity(Roll());
 	public List<ItemStack> Roll()
 	{
 		var tmpPackets = new List<DropTablePacket>();
@@ -57,10 +77,5 @@ public class DropTable
 			if (roll < packet.Rolls) return packet.Packet;
 
 		return null;
-	}
-
-	public void RollAndSet()
-	{
-		var player = GameObject.FindObjectOfType<Player>();
 	}
 }

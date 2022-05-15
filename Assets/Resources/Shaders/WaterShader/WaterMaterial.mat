@@ -39,6 +39,6 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Offset: {r: 0.25, g: 0.05, b: 0, a: 0}
-    - _Tiling: {r: 100, g: 100, b: 0, a: 0}
+    - _Offset: {r: 0.08, g: -0.05, b: 0, a: 0}
+    - _Tiling: {r: 24, g: 32, b: 0, a: 0}
   m_BuildTextureStacks: []

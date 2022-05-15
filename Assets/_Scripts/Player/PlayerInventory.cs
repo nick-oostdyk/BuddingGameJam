@@ -4,7 +4,7 @@ using System.Linq;
 
 public class PlayerInventory
 {
-	public static System.Action<Dictionary<ItemType, int>> OnPlayerInventoryChange;
+	public static event System.Action<Dictionary<ItemType, int>> OnPlayerInventoryChange;
 
 	public Dictionary<ItemType, int> Inventory { get; private set; }
 	public PlayerInventory()
@@ -16,37 +16,33 @@ public class PlayerInventory
 	// adds item to inventory if it does not exist
 	// mutates quantity if item exists
 	// removes item if quantity reaches or drops below 0
-	public void ModifyQuantity(ItemType resource, int value)
+	public void ModifyQuantity(ItemType item, int value)
 	{
-		if (Inventory.ContainsKey(resource))
-			Inventory[resource] += value;
+		if (Inventory.ContainsKey(item))
+			Inventory[item] += value;
 
 		else
-			Inventory[resource] = value;
+			Inventory[item] = value;
 
-		if (Inventory[resource] <= 0)
-			Inventory.Remove(resource);
+		if (Inventory[item] <= 0)
+			Inventory.Remove(item);
 
 		Sort();
 		OnPlayerInventoryChange?.Invoke(Inventory);
 	}
 
-	public void ModifyQuantity((ItemType, int) item) => ModifyQuantity(item.Item1, item.Item2);
-
-	public void ModifyQuantity(Dictionary<ItemType, int> dict)
+	public void ModifyQuantity(List<ItemStack> stackList)
 	{
-		foreach (var (key, value) in dict) ModifyQuantity(key, value);
+		foreach (var stack in stackList) ModifyQuantity(stack.Item, stack.Amount);
 	}
 
+	public void ModifyQuantity(ItemStack stack) => ModifyQuantity(stack.Item, stack.Amount);
+	public void ModifyQuantity(ItemType item) => ModifyQuantity(item, 1);
 	public void Sort()
 	{
 		Inventory = Inventory
 			.OrderBy(item => (int)item.Key)
 			.ToDictionary(item => item.Key, item => item.Value);
-
-		// idk if this is actually doing anything but i found it in the code
-		//var list = GameObject.FindObjectsOfType<GameObject>().Where(i => i.CompareTag("RenderPositionCheck"));
-		//list = list.OrderBy(i => i.transform.position.y);
 	}
 
 	public void Print()

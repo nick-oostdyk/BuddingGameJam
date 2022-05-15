@@ -11,6 +11,11 @@ public class UIInventoryBehaviour : MonoBehaviour
 		PlayerInventory.OnPlayerInventoryChange += _updateInventory;
 	}
 
+	private void OnEnable()
+	{
+		_updateInventory(Player.InventoryWrapper.Inventory);
+	}
+
 	private void _updateInventory(Dictionary<ItemType, int> _inventory)
 	{
 		_clearInventory();

@@ -6,13 +6,10 @@ using System.Timers;
 
 public class ResourceManager : MonoBehaviour
 {
-	private int _minSpawnTimeMS = 1 * 1000;
-	private int _maxSpawnTimeMS = 3 * 1000;
+	private int _minSpawnTimeMS = 2 * 1000;
+	private int _maxSpawnTimeMS = 4 * 1000;
 
 	public Dictionary<ResourceType, DropTable> DropTables;
-
-
-	private DropTableManager _resourceDropTable;
 
 	public void Start()
 	{
@@ -30,194 +27,153 @@ public class ResourceManager : MonoBehaviour
 		if (resource == null) return;
 
 		// give player resource drops
-		_resourceDropTable.RollAndSet(resource.Type);
+		DropTables[resource.Type].RollAndSet();
 		resource.gameObject.SetActive(false);
 
-		// wait for resource to respawn
-		await Task.Delay(Random.Range(_minSpawnTimeMS, _maxSpawnTimeMS));
-
-		// respawn resource
-		if (resource == null) return;
-		resource.gameObject.SetActive(true);
+		// respawn the resource after a random time
+		Util.DelayRunAction(
+			Random.Range(_minSpawnTimeMS, _maxSpawnTimeMS), 
+			() => resource.gameObject.SetActive(true));
 	}
 
 	private void _generateDropTable()
 	{
 		DropTables = new Dictionary<ResourceType, DropTable>();
+
+		DropTables[ResourceType.STONE] = _generateStoneDropTable();
+		DropTables[ResourceType.BOULDER] = _generateBoulderDropTable();
+		DropTables[ResourceType.DRIFTWOOD] = _generateDriftwoodDropTable();
+		DropTables[ResourceType.TREE] = _generateTreeDropTable();
+		DropTables[ResourceType.FIBER] = _generateFiberDropTable();
 	}
 
-	//private DropTable _generateStoneDropTable()
-	//{
-	//	var stoneTable = new DropTable();
+	private DropTable _generateStoneDropTable()
+	{
+		var packetList = new List<DropTablePacket>();
+		
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(1, 3)),
+		}, 4));
 
-	//	stoneTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(1, 3) },
-	//		}), 5
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(3, 7)),
+			new ItemStack(ItemType.BOULDER, _roll(0, 1)),
+		}, 4));
+		
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(3, 7)),
+			new ItemStack(ItemType.BOULDER, _roll(0, 1)),
+			new ItemStack(ItemType.METAL_SCRAP, _roll(0, 1)),
+		}, 2));
 
-	//	stoneTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(3, 7) },
-	//			{ ItemType.BOULDER, _roll(0, 1)},
-	//		}), 5
-	//	);
+		return new DropTable(packetList);
+	}
 
-	//	stoneTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(3, 7) },
-	//			{ ItemType.BOULDER, _roll(0, 1) },
-	//			{ ItemType.METAL_SCRAP, _roll(0, 1) },
-	//		}), 5
-	//	);
+	private DropTable _generateBoulderDropTable()
+	{
+		var packetList = new List<DropTablePacket>();
 
-	//	return stoneTable;
-	//}
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(0, 2)),
+			new ItemStack(ItemType.BOULDER, _roll(1, 2)),
+		}, 7));
 
-	//private DropTable _generateBoulderDropTable()
-	//{
-	//	var boulderTable = new DropTable();
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(1, 3)),
+			new ItemStack(ItemType.BOULDER, _roll(2, 3)),
+			new ItemStack(ItemType.METAL_SCRAP, _roll(0, 1)),
+		}, 3));
 
-	//	boulderTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(0, 2) },
-	//			{ ItemType.BOULDER, _roll(1, 2) },
-	//		}), 7
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STONE, _roll(3, 5)),
+			new ItemStack(ItemType.BOULDER, _roll(2, 5)),
+			new ItemStack(ItemType.METAL_SCRAP, _roll(1, 2)),
+		}, 1));
 
-	//	boulderTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(1, 3) },
-	//			{ ItemType.BOULDER, _roll(2, 3) },
-	//			{ ItemType.METAL_SCRAP, _roll(0, 1) },
-	//		}), 3
-	//	);
+		return new DropTable(packetList);
+	}
 
-	//	boulderTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STONE, _roll(3, 5) },
-	//			{ ItemType.BOULDER, _roll(2, 5) },
-	//			{ ItemType.METAL_SCRAP, _roll(1, 2) },
-	//		}), 1
-	//	);
+	private DropTable _generateDriftwoodDropTable()
+	{
+		var packetList = new List<DropTablePacket>();
 
-	//	return boulderTable;
-	//}
-	//private DropTable _generateDriftwoodDropTable()
-	//{
-	//	var driftwoodTable = new DropTable();
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(1, 3)),
+		}, 7));
 
-	//	driftwoodTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(1, 3) },
-	//		}), 7
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(2, 4)),
+			new ItemStack(ItemType.WOOD, _roll(0, 1)),
+		}, 2));
 
-	//	driftwoodTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(2, 4) },
-	//			{ ItemType.WOOD, _roll(0, 1) },
-	//		}), 2
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(3, 5)),
+			new ItemStack(ItemType.FIBER, _roll(0, 1)),
+			new ItemStack(ItemType.WOOD, 1),
+		}, 1));
 
-	//	driftwoodTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(3, 5) },
-	//			{ ItemType.FIBER, _roll(0, 1) },
-	//			{ ItemType.WOOD, 1 },
-	//		}), 1
-	//	);
+		return new DropTable(packetList);
+	}
 
+	private DropTable _generateTreeDropTable()
+	{
+		var packetList = new List<DropTablePacket>();
 
-	//	return driftwoodTable;
-	//}
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(0, 2)),
+			new ItemStack(ItemType.WOOD, _roll(1, 3)),
+		}, 6));
 
-	//private DropTable _generateTreeDropTable()
-	//{
-	//	var treeTable = new DropTable();
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(1, 3)),
+			new ItemStack(ItemType.WOOD, _roll(2, 3)),
+			new ItemStack(ItemType.FIBER, _roll(0, 1)),
+		}, 3));
 
-	//	treeTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(0, 2) },
-	//			{ ItemType.WOOD, _roll(1, 3) },
-	//		}), 6
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.STICK, _roll(2, 5)),
+			new ItemStack(ItemType.WOOD, _roll(3, 5)),
+			new ItemStack(ItemType.FIBER, _roll(0, 2)),
+		}, 1));
 
-	//	treeTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(1, 3) },
-	//			{ ItemType.WOOD, _roll(2, 3) },
-	//			{ ItemType.FIBER, _roll(0, 1) },
-	//		}), 3
-	//	);
+		return new DropTable(packetList);
+	}
 
-	//	treeTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.STICK, _roll(2, 5) },
-	//			{ ItemType.WOOD, _roll(3, 5) },
-	//			{ ItemType.FIBER, _roll(0, 2) },
-	//		}), 1
-	//	);
+	private DropTable _generateFiberDropTable()
+	{
+		var packetList = new List<DropTablePacket>();
 
-	//	return treeTable;
-	//}
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.FIBER, _roll(1, 2)),
+		}, 4));
 
-	//private DropTable _generateFiberDropTable()
-	//{
-	//	var fiberTable = new DropTable();
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.FIBER, _roll(1, 3)),
+			new ItemStack(_roll(0, 1) == 0 ? ItemType.WOOD : ItemType.STONE, _roll(0, 1)),
+		}, 3));
 
-	//	fiberTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.FIBER, _roll(1, 2) },
-	//		}), 4
-	//	);
+		packetList.Add(new DropTablePacket(new List<ItemStack>()
+		{
+			new ItemStack(ItemType.FIBER, _roll(2, 4)),
+			new ItemStack(_roll(0, 1) == 0 ? ItemType.WOOD : ItemType.STONE, _roll(1, 2)),
+		}, 1));
 
-	//	fiberTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.FIBER, _roll(1, 3) },
-	//			{ _roll(0, 1) == 0 ? ItemType.WOOD : ItemType.STONE, _roll(0, 1) },
-	//		}), 3
-	//	);
-
-	//	fiberTable.AddTableIntPair(
-	//	new Table(
-	//		new Dictionary<ItemType, int>()
-	//		{
-	//			{ ItemType.FIBER, _roll(2, 4) },
-	//			{ _roll(0, 1) == 0 ? ItemType.WOOD : ItemType.STONE, _roll(1, 2) },
-	//		}), 1
-	//	);
-
-	//	return fiberTable;
-	//}
+		return new DropTable(packetList);
+	}
 
 	private int _roll(int min, int max) => Random.Range(min, ++max);
 }

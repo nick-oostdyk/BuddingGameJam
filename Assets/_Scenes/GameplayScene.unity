@@ -1496,7 +1496,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.327146, y: 1}
+    m_SensorSize: {x: 1.7771084, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2122,7 +2122,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.14929691, g: 0.5754717, b: 0.5033469, a: 1}
+  m_Color: {r: 0.093716644, g: 0.509434, b: 0.2827456, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3581,7 +3581,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.327146, y: 1}
+    m_SensorSize: {x: 1.7771084, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4134,7 +4134,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.327146, y: 1}
+    m_SensorSize: {x: 1.7771084, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
