@@ -171,7 +171,7 @@ public class Player : Entity
 		_toolSR.enabled = true;
 		_toolSR.sprite = toolSprite;
 
-		Util.PlayAndWaitForAnim(_animator, "SwingTool", numSwings, 1);
+		await Util.PlayAndWaitForAnim(_animator, "SwingTool", numSwings, 1);
 
 		// set end anim trigger and hide tool
 		_animator.SetTrigger("FinishInteract");

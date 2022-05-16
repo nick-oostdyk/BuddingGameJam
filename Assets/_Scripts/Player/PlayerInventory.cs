@@ -18,6 +18,11 @@ public class PlayerInventory
 	// removes item if quantity reaches or drops below 0
 	public void ModifyQuantity(ItemType item, int value)
 	{
+		if (value == 0) return;
+
+		PopupHandler.Instance.PushPopup(ItemPool.ItemDict[item].Sprite,
+			$"{(value < 0 ? "-" : "+")}{Mathf.Abs(value)}x");
+
 		if (Inventory.ContainsKey(item))
 			Inventory[item] += value;
 
