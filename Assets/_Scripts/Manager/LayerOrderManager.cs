@@ -8,34 +8,29 @@ public class LayerOrderManager : MonoBehaviour
 	private List<Transform> _layerOrderObjects = new List<Transform>();
 
 	private Vector3 _feetPos => _player.transform.Find("Feet").position;
-	private Vector3 _pPos => _player.transform.position;
 	private SpriteRenderer _playerRenderer;
 
 	void Start()
 	{
 		_player = FindObjectOfType<Player>();
 		_playerRenderer = _player.transform.GetChild(0).GetComponent<SpriteRenderer>();
+		_playerRenderer.sortingOrder = 3;
 
 		RebuildLayeredObjectList();
 	}
 
 	void FixedUpdate()
 	{
-		// find closest LayerOrder
-		float minDist = float.MaxValue;
-		Vector3 minPos = Vector3.zero;
-		foreach (var obj in _layerOrderObjects)
-		{
-			var dist = Vector2.SqrMagnitude(obj.transform.parent.position - _pPos);
-			if (dist < minDist)
-			{
-				minDist = dist;
-				minPos = obj.transform.position;
-			}
-		}
+		System.Action<Transform> setSROrder = (obj) => {
 
-		// check player y position against closest LayerOrder position
-		_playerRenderer.sortingOrder = _feetPos.y <= minPos.y ? 4 : 2;
+			if (obj.transform.position.y > _feetPos.y)
+				obj.parent.GetComponent<SpriteRenderer>().sortingOrder = 2;
+			else
+				obj.parent.GetComponent<SpriteRenderer>().sortingOrder = 4;
+		};
+
+		// find closest LayerOrder
+		foreach (var obj in _layerOrderObjects) setSROrder(obj);
 	}
 
 	public void RebuildLayeredObjectList()
@@ -50,7 +45,7 @@ public class LayerOrderManager : MonoBehaviour
 		foreach (var obj in objects)
 		{
 			_layerOrderObjects.Add(obj.transform);
-			obj.GetComponentInParent<SpriteRenderer>().sortingOrder = 3;
+			obj.GetComponentInParent<SpriteRenderer>().sortingLayerName = "Midground";
 		}
 	}
 }

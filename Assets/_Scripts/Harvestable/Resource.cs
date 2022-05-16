@@ -18,8 +18,16 @@ public enum ResourceType : short
 
 public abstract class Resource : MonoBehaviour, IInteractable
 {
-	public event EventHandler OnInteract;
+	protected SpriteRenderer _sr;
+
+	public event System.EventHandler OnInteract;
 	public virtual void Interact() => OnInteract?.Invoke(this, EventArgs.Empty);
 
 	public abstract ResourceType Type { get; }
+
+	public void Awake()
+	{
+		_sr = GetComponent<SpriteRenderer>();
+		_sr.flipX = UnityEngine.Random.Range(0, 2) == 0;
+	}
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-	private int _minSpawnTimeMS = 2 * 1000;
-	private int _maxSpawnTimeMS = 4 * 1000;
+	private int _minSpawnTimeMS = 45 * 1000;
+	private int _maxSpawnTimeMS = 105 * 1000;
 
 	public Dictionary<ResourceType, DropTable> DropTables;
 

@@ -101,12 +101,16 @@ public class CraftingRecipe
 		{
 			case ItemType.BASIC_MULTI_TOOL:
 				GameManager.Instance.AddGameFlag(GameFlag.TOOL_ONE);
+				DialogueBoxManager.Instance.PushText("I should be able to use this to " +
+					"chop down those trees, and break those boulders!");
 				break;
 			case ItemType.ADVANCED_MULTI_TOOL:
 				GameManager.Instance.AddGameFlag(GameFlag.TOOL_TWO);
+				DialogueBoxManager.Instance.PushText("This should make gathering much faster.");
 				break;
 			case ItemType.FISHING_ROD:
 				GameManager.Instance.AddGameFlag(GameFlag.FISH_ROD);
+				DialogueBoxManager.Instance.PushText("I can use this on the North of the island.");
 				break;
 			case ItemType.FIREPIT:
 				break;
@@ -114,7 +118,9 @@ public class CraftingRecipe
 				break;
 			case ItemType.FURNACE:
 				break;
-			case ItemType.NUM_ITEMS:
+			case ItemType.CRAFTING_STATION:
+				break;
+			case ItemType.BED:
 				break;
 			default:
 				break;
