@@ -170,15 +170,8 @@ public class Player : Entity
 		GameManager.Instance.SetState(GameState.HARVEST);
 		_toolSR.enabled = true;
 		_toolSR.sprite = toolSprite;
-		_animator.Play("SwingTool", 1);
 
-		// wait for anim to start
-		while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
-			await Task.Yield();
-
-		// wait for anim to finish
-		while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
-			await Task.Yield();
+		Util.PlayAndWaitForAnim(_animator, "SwingTool", numSwings, 1);
 
 		// set end anim trigger and hide tool
 		_animator.SetTrigger("FinishInteract");

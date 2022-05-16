@@ -120,15 +120,8 @@ public class GameManager : MonoBehaviour
 
 		// fade in
 		await vignetteController.FadeFromBlack(1.5f);
-		_gameStartCutscene.Play("GameStart");
 
-		// wait for animation to start
-		while (!_gameStartCutscene.GetCurrentAnimatorStateInfo(0).IsName("GameStart"))
-			await Task.Yield();
-
-		// wait for animation to end
-		while (_gameStartCutscene.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
-			await Task.Yield();
+		await Util.PlayAndWaitForAnim(_gameStartCutscene, "GameStart");
 
 		dialogueBox.PushText("There's something written on the paper plane.");
 		dialogueBox.PushSequence("Paper Plane", new DialogueBoxManager.TextSequence(new string[] {
@@ -170,5 +163,16 @@ public static class Util
 	{
 		await Task.Delay(delayMS);
 		action();
+	}
+
+	public static async Task PlayAndWaitForAnim(Animator animator, string anim, int numLoops = 1, int layer = 0)
+	{
+		animator.Play(anim, layer);
+
+		while (!animator.GetCurrentAnimatorStateInfo(layer).IsName(anim))
+			await Task.Yield();
+
+		while (animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < numLoops - 0.1f)
+			await Task.Yield();
 	}
 }
