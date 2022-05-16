@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
-public class UIInventoryItemBehaviour : MonoBehaviour
+public class UIItemStack : MonoBehaviour
 {
-	[SerializeField] private TextMeshProUGUI _itemName;
+	[SerializeField] private Image _image;
 	[SerializeField] private TextMeshProUGUI _itemAmount;
 
-	public void Init(string name, string amount)
+	public void Init(Sprite sprite, string amount)
 	{
-		_itemName.text = name;
+		_image.sprite = sprite;
 		_itemAmount.text = amount;
 	}
 }

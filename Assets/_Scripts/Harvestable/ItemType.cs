@@ -1,4 +1,8 @@
-﻿public enum ItemType
+﻿using System.Collections.Generic;
+using System.Collections;
+using UnityEngine;
+
+public enum ItemType
 {
 	// resources
 	STONE,
@@ -57,4 +61,18 @@ public enum FishType
 
 	OCTOPUS,
 	GOLDEN_OCTOPUS,
+}
+
+public class ItemPool
+{
+	public static Dictionary<ItemType, ItemObject> ItemDict;
+
+	public static void Init()
+	{
+		ItemObject[] itemArr = Resources.LoadAll<ItemObject>("ScriptableObjects/Items");
+
+		ItemDict = new Dictionary<ItemType, ItemObject>();
+		foreach (var item in itemArr)
+			ItemDict[item.Type] = item;
+	}
 }

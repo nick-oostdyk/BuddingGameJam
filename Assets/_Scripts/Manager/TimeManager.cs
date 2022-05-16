@@ -40,9 +40,11 @@ public class TimeManager : MonoBehaviour
 			SLEEP,
 		}
 
+		public static System.Action<DaytimeEvent> OnDaytimeEvent;
 		public static float DayLength { get => 333f / _timeScale; }
 		public static float TimeIntoDay => TimeSinceStart - _dayStart;
-		public static System.Action<DaytimeEvent> OnDaytimeEvent;
+		public static float NormalizedDayTime = TimeIntoDay / DayLength;
+		public static int Day = -1;
 
 		private static DaytimeEvent _time;
 		private static float _dayStart;
@@ -86,6 +88,7 @@ public class TimeManager : MonoBehaviour
 		{
 			if (evnt != DaytimeEvent.MORNING) return;
 			_dayStart = TimeSinceStart;
+			++Day;
 		}
 
 		// sets player to sleep when sleep is triggered

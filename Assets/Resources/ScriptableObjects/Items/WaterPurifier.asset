@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WaterPurifier
   m_EditorClassIdentifier: 
   Sprite: {fileID: 0}
-  Type: 15
+  Type: 16

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58341cfac2fa6ae4d8ef18e77e98076c, type: 3}
   m_Name: Plank
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 1421935894, guid: b696012d96075654aa6305ff307759b1, type: 3}
   Type: 6

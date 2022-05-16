@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FishDisplay
   m_EditorClassIdentifier: 
   Sprite: {fileID: 0}
-  Type: 16
+  Type: 17

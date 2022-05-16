@@ -11,9 +11,11 @@ public class DayCycleController : MonoBehaviour
 	private bool _dayStarting = false;
 	private float currWeight => _vignetteVolume.weight;
 
-	public void Awake()
+	public void Awake() => TimeManager.Clock.OnDaytimeEvent += _handleDaytimeEvent;
+
+	public void Start()
 	{
-		TimeManager.Clock.OnDaytimeEvent += _handleDaytimeEvent;
+		_vignetteVolume.weight = 0.3f;
 	}
 
 	// when the time changes tween to the brightness of the new time

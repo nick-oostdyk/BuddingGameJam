@@ -47,11 +47,14 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Transform _playerSpawnPosition;
 	[SerializeField] private Animator _gameStartCutscene;
 	[SerializeField] private ToggleUI _timerToggle;
+	[SerializeField] private ToggleUI _uiButtonsToggle;
 
 	[SerializeField] private bool _playCutscene = true;
 
 	private void Start()
 	{
+		ItemPool.Init();
+
 		if (_playCutscene) // debug ahoy
 			_playOpening();
 		else
@@ -66,9 +69,9 @@ public class GameManager : MonoBehaviour
 			if (GameFlags.HasFlag(GameFlag.CAVE_ENTERED)) return;
 			AddGameFlag(GameFlag.CAVE_ENTERED);
 
-			DialogueBoxManager.Instance.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
-					"This looks like a good place to settle down.",
-					"I can use this area to work in, and sleep the night away!",
+			DialogueBoxManager.Instance.PushSequence(new DialogueBoxManager.TextSequence(new string[] {
+					"This looks like a good place to settle down!",
+					"I can use this area as a workshop, or to sleep the night away.",
 				}));
 		};
 	}
@@ -100,7 +103,7 @@ public class GameManager : MonoBehaviour
 		_player.transform.position = _playerSpawnPosition.position;
 
 		// push opening dialogue
-		dialogueBox.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
+		dialogueBox.PushSequence(new DialogueBoxManager.TextSequence(new string[] {
 			"You wake up.",
 			"You feel sand sticking to your skin.",
 			"The sun is beating down on your face."
@@ -127,7 +130,7 @@ public class GameManager : MonoBehaviour
 		while (_gameStartCutscene.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
 			await Task.Yield();
 
-		dialogueBox.PushText("", "There's something written on the paper plane.");
+		dialogueBox.PushText("There's something written on the paper plane.");
 		dialogueBox.PushSequence("Paper Plane", new DialogueBoxManager.TextSequence(new string[] {
 				"We saw your balloon go down over the island!",
 				"Please, stay put,",
@@ -140,6 +143,7 @@ public class GameManager : MonoBehaviour
 			SetState(GameState.PLAY);
 			TimeManager.StartTimer();
 			_timerToggle.Toggle();
+			_uiButtonsToggle.Toggle();
 			_timerToggle.UIObject.GetComponent<Animator>().Play("TimerStart");
 
 			// play additional help text after 3.5s 
@@ -151,7 +155,7 @@ public class GameManager : MonoBehaviour
 	{
 		// additional help text
 		var dialogueBox = DialogueBoxManager.Instance;
-		dialogueBox.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
+		dialogueBox.PushSequence(new DialogueBoxManager.TextSequence(new string[] {
 				"How am I supposed to survive for three days?",
 				"I guess I need to find some way to get FOOD and WATER.",
 				"I can start by gathering some resources,",

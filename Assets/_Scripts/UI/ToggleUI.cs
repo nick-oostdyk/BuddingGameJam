@@ -1,27 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class ToggleUI : MonoBehaviour
 {
 	[Header("Toggle Key")]
 	[SerializeField] private InputAction _action;
+	[SerializeField] private Button _assocButton;
 	[SerializeField] public GameObject UIObject;
-	[SerializeField] private bool _startEnabled;
 
 	private bool _enabled;
 
 	// close all the toggleable UIs on game start
 	void Start()
 	{
-		UIObject.SetActive(_startEnabled);
-		_enabled = _startEnabled;
+		UIObject.SetActive(false);
+		_enabled = false;
+
+		if (_assocButton is not null)
+			_assocButton.onClick.AddListener(Toggle);
 	}
 
 	void Update()
 	{
-		if (_action.WasPerformedThisFrame()) 
+		if (_action.WasPerformedThisFrame())
 			Toggle();
 	}
 

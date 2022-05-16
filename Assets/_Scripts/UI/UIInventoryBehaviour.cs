@@ -13,7 +13,8 @@ public class UIInventoryBehaviour : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_updateInventory(Player.InventoryWrapper.Inventory);
+		if (Player.InventoryWrapper is not null)
+			_updateInventory(Player.InventoryWrapper.Inventory);
 	}
 
 	private void _updateInventory(Dictionary<ItemType, int> _inventory)
@@ -33,7 +34,7 @@ public class UIInventoryBehaviour : MonoBehaviour
 		// instantiates a ui prefab that holds item info
 		foreach (var (key, value) in _inventory)
 			Instantiate(_inventoryItemPrefab, transform)
-				.GetComponent<UIInventoryItemBehaviour>().Init($"{key.ToString().ToLower()}", $"x{value}");
+				.GetComponent<UIItemStack>().Init(ItemPool.ItemDict[key].Sprite, $"x{value}");
 	}
 
 	private void OnDestroy() => PlayerInventory.OnPlayerInventoryChange -= _updateInventory;
