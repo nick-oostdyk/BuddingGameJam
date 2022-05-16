@@ -7,7 +7,7 @@ public class ToggleUI : MonoBehaviour
 {
 	[Header("Toggle Key")]
 	[SerializeField] private InputAction _action;
-	[SerializeField] private GameObject _UIObject;
+	[SerializeField] public GameObject UIObject;
 	[SerializeField] private bool _startEnabled;
 
 	private bool _enabled;
@@ -15,7 +15,7 @@ public class ToggleUI : MonoBehaviour
 	// close all the toggleable UIs on game start
 	void Start()
 	{
-		_UIObject.SetActive(_startEnabled);
+		UIObject.SetActive(_startEnabled);
 		_enabled = _startEnabled;
 	}
 
@@ -29,7 +29,7 @@ public class ToggleUI : MonoBehaviour
 	public void Toggle()
 	{
 		_enabled = !_enabled;
-		_UIObject.SetActive(_enabled);
+		UIObject.SetActive(_enabled);
 	}
 
 	private void OnEnable() => _action.Enable();

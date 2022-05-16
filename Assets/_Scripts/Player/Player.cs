@@ -7,6 +7,7 @@ public class Player : Entity
 	public static PlayerInventory InventoryWrapper;
 
 	[SerializeField] private SpriteRenderer _toolSR;
+	[SerializeField] private Sprite[] _toolSprites;
 
 	public PromptObject PromptObject;
 	private IInteractable _interactTarget;
@@ -22,6 +23,7 @@ public class Player : Entity
 		PromptObject = new PromptObject(transform);
 		_controls = GetComponent<PlayerInputHandler>();
 		_animator = GetComponent<Animator>();
+		_toolSR.enabled = false;
 	}
 
 	private void _stateChangeHandler(GameState state)
@@ -60,49 +62,13 @@ public class Player : Entity
 		// if there is no interact target return
 		if (_interactTarget is null) return;
 
-		// if the interact target is a resource
-		try {
+		try
+		{
+			// if the interact target is a resource
 			var r = _interactTarget as Resource;
-
+			bool canHarvest = true;
 			if (r is not null)
-			{
-				int numSwings = 0;
-				// check how many swings for the resource
-				switch (r.Type)
-				{
-					case ResourceType.STONE:
-					case ResourceType.FIBER:
-					case ResourceType.DRIFTWOOD:
-						numSwings = 1;
-						break;
-					case ResourceType.BOULDER:
-						numSwings = 2;
-						break;
-					case ResourceType.TREE:
-						numSwings = 3;
-						break;
-				}
-
-				// swing anim & player input lock
-				GameManager.Instance.SetState(GameState.HARVEST);
-				_toolSR.enabled = true;
-				_animator.Play("SwingTool", 1);
-
-				// wait for anim to start
-				while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
-					await Task.Yield();
-
-				// wait for anim to finish
-				while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
-					await Task.Yield();
-
-				// set end anim trigger and hide tool
-				_animator.SetTrigger("FinishInteract");
-				_toolSR.enabled = false;
-
-				// re-enable player input
-				GameManager.Instance.SetState(GameState.PLAY);
-			}
+				if (!await _harvestResource(r)) return;
 		}
 		catch (System.Exception e) { print(e.Message); }
 
@@ -132,6 +98,96 @@ public class Player : Entity
 				PromptObject.SetEnabled(true);
 			}
 		}
+	}
+
+	private async Task<bool> _harvestResource(Resource resource)
+	{
+		int numSwings = 0;
+		var canHarvest = true;
+		var flags = GameManager.Instance.GameFlags;
+		Sprite toolSprite = _toolSprites[0];
+
+		// no tools
+		if (!flags.HasFlag(GameFlag.TOOL_ONE))
+		{
+			numSwings = 3;
+
+			switch (resource.Type)
+			{
+				case ResourceType.BOULDER:
+				case ResourceType.TREE:
+					canHarvest = false;
+					break;
+			}
+		}
+		// has tool 1
+		else if (!flags.HasFlag(GameFlag.TOOL_TWO))
+		{
+			toolSprite = _toolSprites[1];
+			switch (resource.Type)
+			{
+				case ResourceType.FIBER:
+				case ResourceType.STONE:
+				case ResourceType.DRIFTWOOD:
+					numSwings = 2;
+					break;
+				case ResourceType.BOULDER:
+					numSwings = 4;
+					break;
+				case ResourceType.TREE:
+					numSwings = 4;
+					break;
+			}
+		}
+		// has tool 2
+		else
+		{
+			toolSprite = _toolSprites[2];
+			switch (resource.Type)
+			{
+				case ResourceType.FIBER:
+				case ResourceType.STONE:
+				case ResourceType.DRIFTWOOD:
+					numSwings = 1;
+					break;
+				case ResourceType.BOULDER:
+					numSwings = 2;
+					break;
+				case ResourceType.TREE:
+					numSwings = 3;
+					break;
+			}
+		}
+
+		if (!canHarvest)
+		{
+			FindObjectOfType<Player>().StopMovementImmediate();
+			DialogueBoxManager.Instance.PushText("", "I need a better tool to harvest this.");
+			return false;
+		}
+
+		// swing anim & player input lock
+		GameManager.Instance.SetState(GameState.HARVEST);
+		_toolSR.enabled = true;
+		_toolSR.sprite = toolSprite;
+		_animator.Play("SwingTool", 1);
+
+		// wait for anim to start
+		while (!_animator.GetCurrentAnimatorStateInfo(1).IsName("SwingTool"))
+			await Task.Yield();
+
+		// wait for anim to finish
+		while (_animator.GetCurrentAnimatorStateInfo(1).normalizedTime < numSwings - 0.1f)
+			await Task.Yield();
+
+		// set end anim trigger and hide tool
+		_animator.SetTrigger("FinishInteract");
+		_toolSR.enabled = false;
+
+		// re-enable player input
+		GameManager.Instance.SetState(GameState.PLAY);
+
+		return true;
 	}
 }
 

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
-using System.Timers;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -28,16 +26,19 @@ public class ResourceManager : MonoBehaviour
 
 		// give player resource drops
 		DropTables[resource.Type].RollAndSet();
+		_generateDropTable();
 		resource.gameObject.SetActive(false);
 
 		// respawn the resource after a random time
 		Util.DelayRunAction(
-			Random.Range(_minSpawnTimeMS, _maxSpawnTimeMS), 
+			Random.Range(_minSpawnTimeMS, _maxSpawnTimeMS),
 			() => resource.gameObject.SetActive(true));
 	}
 
 	private void _generateDropTable()
 	{
+		if (DropTables is not null) DropTables.Clear();
+
 		DropTables = new Dictionary<ResourceType, DropTable>();
 
 		DropTables[ResourceType.STONE] = _generateStoneDropTable();
@@ -50,7 +51,7 @@ public class ResourceManager : MonoBehaviour
 	private DropTable _generateStoneDropTable()
 	{
 		var packetList = new List<DropTablePacket>();
-		
+
 		packetList.Add(new DropTablePacket(new List<ItemStack>()
 		{
 			new ItemStack(ItemType.STONE, _roll(1, 3)),
@@ -61,7 +62,7 @@ public class ResourceManager : MonoBehaviour
 			new ItemStack(ItemType.STONE, _roll(3, 7)),
 			new ItemStack(ItemType.BOULDER, _roll(0, 1)),
 		}, 4));
-		
+
 		packetList.Add(new DropTablePacket(new List<ItemStack>()
 		{
 			new ItemStack(ItemType.STONE, _roll(3, 7)),

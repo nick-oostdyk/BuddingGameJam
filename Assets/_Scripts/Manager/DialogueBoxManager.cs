@@ -78,6 +78,7 @@ public class DialogueBoxManager : MonoBehaviour
 	}
 
 	public void PushText(string head, string text) => PushSequence(head, new TextSequence(new string[] { text }));
+	public void PushText(string text) => PushSequence("", new TextSequence(new string[] { text }));
 	public void PushSequence(string head, TextSequence sequence)
 	{
 		_textQueue.Enqueue((head, sequence));

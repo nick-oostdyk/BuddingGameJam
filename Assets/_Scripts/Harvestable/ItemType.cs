@@ -16,11 +16,12 @@
 	// tools
 	BASIC_MULTI_TOOL,
 	ADVANCED_MULTI_TOOL,
-	FISHING_ROD, // i will destroy everything and everyone if you do not let me make a fishing minigame
+	FISHING_ROD, // i made the fishing minigame :D
 
 	// structures
 	FIREPIT,
 	CRAFTING_STATION,
+	BED,
 	FURNACE,
 	WATER_PURIFIER,
 	FISH_DISPLAY,

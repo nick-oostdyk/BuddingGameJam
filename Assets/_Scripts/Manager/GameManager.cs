@@ -23,6 +23,7 @@ public enum GameFlag : int
 	FISH_ROD = 0b1 << 2,
 
 	CAVE_PROMPT = 0b1 << 3,
+	CAVE_ENTERED = 0b1 << 4,
 }
 
 public class GameManager : MonoBehaviour
@@ -59,6 +60,17 @@ public class GameManager : MonoBehaviour
 			TimeManager.StartTimer();
 			_timerToggle.Toggle();
 		}
+
+		OnGameStateChanged += state => {
+			if (state != GameState.CAVE) return;
+			if (GameFlags.HasFlag(GameFlag.CAVE_ENTERED)) return;
+			AddGameFlag(GameFlag.CAVE_ENTERED);
+
+			DialogueBoxManager.Instance.PushSequence("", new DialogueBoxManager.TextSequence(new string[] {
+					"This looks like a good place to settle down.",
+					"I can use this area to work in, and sleep the night away!",
+				}));
+		};
 	}
 
 	public void SetState(GameState state)
@@ -128,6 +140,7 @@ public class GameManager : MonoBehaviour
 			SetState(GameState.PLAY);
 			TimeManager.StartTimer();
 			_timerToggle.Toggle();
+			_timerToggle.UIObject.GetComponent<Animator>().Play("TimerStart");
 
 			// play additional help text after 3.5s 
 			Util.DelayRunAction(3500, () => _pushGameStartHelp());
