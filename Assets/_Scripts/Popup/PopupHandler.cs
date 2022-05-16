@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class PopupHandler : MonoBehaviour
 {
-	// attached to Player right now to test functionality
+	public static PopupHandler Instance { get; private set; }
+	private void Awake()
+	{
+		if (Instance == null) Instance = this;
+		else Destroy(this);
+	}
+
 	[SerializeField] private GameObject _popupPrefab;
 	[SerializeField] private Sprite _sprite;
 
 	private Queue<PopupText> _popupPool;
 
-	void Start()
-	{
-		GameObject p = Instantiate(_popupPrefab, Vector3.zero, Quaternion.identity);
-		var popup = p.GetComponent<PopupText>();
-		popup.PlayPopup(_sprite, "big banana bitches");
-		Util.DelayRunAction(2500, () => Destroy(popup.gameObject));
+	private void Start() => _fillPool();
 
-		_fillPool();
-	}
-
-	public void PushPopup(Sprite sprite, string text)
+	public async void PushPopup(Sprite sprite, string text)
 	{
 		var popup = _popupPool.Dequeue();
-		popup.PlayPopup(sprite, text);
-
-		
+		await popup.PlayPopup(sprite, text);
+		popup.Clear();
+		_popupPool.Enqueue(popup);
 	}
 
 	private void _fillPool()
 	{
+		print("popup pool created");
+
 		if (_popupPool is not null) _popupPool.Clear();
 		_popupPool = new Queue<PopupText>();
 

@@ -162,7 +162,7 @@ public class Player : Entity
 		if (!canHarvest)
 		{
 			FindObjectOfType<Player>().StopMovementImmediate();
-			DialogueBoxManager.Instance.PushText("", "I need a better tool to harvest this.");
+			DialogueBoxManager.Instance.PushText("I need a better tool to harvest this.");
 			return false;
 		}
 
