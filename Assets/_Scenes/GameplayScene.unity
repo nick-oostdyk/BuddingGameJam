@@ -3119,6 +3119,7 @@ GameObject:
   - component: {fileID: 547344723}
   - component: {fileID: 547344721}
   - component: {fileID: 547344720}
+  - component: {fileID: 547344724}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3345,6 +3346,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &547344724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547344717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf6e6bd2fd814c4c98ab505a44b4fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popup: {fileID: 7780227475528707516, guid: d6d9185c6401da543887d4171778e797, type: 3}
+  _sprite: {fileID: 21300000, guid: 467c826ebdfc44147a14944a970daf7e, type: 3}
 --- !u!4 &550041541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8779109687533455113, guid: 30c015e00e82bfd40a1ae5a6ae943c74, type: 3}
@@ -3993,7 +4008,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5a231acbeb5daeb40810e59d7c1cdbd6, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
