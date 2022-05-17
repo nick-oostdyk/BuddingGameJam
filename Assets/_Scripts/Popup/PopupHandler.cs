@@ -12,24 +12,41 @@ public class PopupHandler : MonoBehaviour
 	}
 
 	[SerializeField] private GameObject _popupPrefab;
-	[SerializeField] private Sprite _sprite;
 
 	private Queue<PopupText> _popupPool;
+	private Queue<PopupText> _activePool;
 
-	private void Start() => _fillPool();
+	private float _pushDelay = 0.3f;
+	private float _nextPushTime = 0f;
 
-	public async void PushPopup(Sprite sprite, string text)
+	private void Start()
+	{
+		_activePool = new Queue<PopupText>();
+		_fillPool();
+	}
+
+	public async void Update()
+	{
+		if (_activePool.Count == 0) return;
+		if (Time.time > _nextPushTime)
+		{
+			_nextPushTime = Time.time + _pushDelay;
+			var popup = _activePool.Dequeue();
+			await popup.PlayAnim();
+			popup.Clear();
+			_popupPool.Enqueue(popup);
+		}
+	}
+
+	public void PushPopup(Sprite sprite, string text)
 	{
 		var popup = _popupPool.Dequeue();
-		await popup.PlayPopup(sprite, text);
-		popup.Clear();
-		_popupPool.Enqueue(popup);
+		popup.SetAttributes(sprite, text);
+		_activePool.Enqueue(popup);
 	}
 
 	private void _fillPool()
 	{
-		print("popup pool created");
-
 		if (_popupPool is not null) _popupPool.Clear();
 		_popupPool = new Queue<PopupText>();
 

@@ -8,30 +8,43 @@ using TMPro;
 public class PopupText : MonoBehaviour
 {
 	[SerializeField] private Animator _anim;
-	[SerializeField] private TextMeshProUGUI _text;
+	[SerializeField] private TextMeshProUGUI _tmpugui;
 	[SerializeField] private Image _image;
 
-	public async Task PlayPopup(Sprite sprite, string text)
+	private Sprite _sprite;
+	private string _text;
+
+	public void SetAttributes(Sprite s, string t)
+	{
+		_sprite = s;
+		_text = t;
+	}
+
+	public async Task PlayAnim()
+	{
+		_enable();
+		await Util.PlayAndWaitForAnim(_anim, "PopupText");
+	}
+
+	private void _enable()
 	{
 		_image.enabled = true;
-		_image.sprite = sprite;
+		_image.sprite = _sprite;
 		_image.color = Color.white;
 
-		_text.text = text;
-		_text.color = Color.white;
-
-		await Util.PlayAndWaitForAnim(_anim, "PopupText");
+		_tmpugui.text = _text;
+		_tmpugui.color = Color.white;
 	}
 
 	public void Clear()
 	{
 		var clearWhite = new Color(1f, 1f, 1f, 0f);
-		
+
 		_image.color = clearWhite;
 		_image.sprite = null;
 		_image.enabled = false;
 
-		_text.color = clearWhite;
-		_text.text = "";
+		_tmpugui.color = clearWhite;
+		_tmpugui.text = "";
 	}
 }

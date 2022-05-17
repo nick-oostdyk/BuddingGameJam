@@ -5,7 +5,7 @@ using UnityEngine;
 // fish entity from fishing phase 2
 public class FishingGameFish : FishingGameEntity
 {
-	public FishItem FishItem;
+	[HideInInspector] public FishItem FishItem;
 	private Collider2D _zoneCollider;
 	private Collider2D _collider;
 

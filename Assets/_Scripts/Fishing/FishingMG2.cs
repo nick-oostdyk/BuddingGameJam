@@ -74,9 +74,11 @@ public class FishingMG2 : FishingMinigame
 			}
 		}
 
+		// the fish
 		private void _buildObj(Transform parent, Sprite sprite, int index)
 		{
 			go.name = ((Beat)index).ToString();
+			go.layer = LayerMask.NameToLayer("Fish");
 
 			// position
 			var theta = (index + 1) * Mathf.PI / 2;
@@ -87,7 +89,7 @@ public class FishingMG2 : FishingMinigame
 			go.transform.parent = parent.transform;
 			go.transform.position = parent.transform.position + offset;
 			go.transform.localScale = Vector3.one;
-			
+
 			// sprite renderer
 			var sr = go.AddComponent<SpriteRenderer>();
 			sr.color = Color.black;
@@ -200,7 +202,11 @@ public class FishingMG2 : FishingMinigame
 			}
 
 			// this is the moment where the ring hits its max size
-			var hit = Physics2D.OverlapCircle(_bobble.transform.position, .5f);
+			var hit = Physics2D.OverlapCircle(_bobble.transform.position, 1f, LayerMask.GetMask("Fish"));
+
+			if (hit is null) print("no hit");
+			else print(hit.name);
+
 			if (hit != null && hit.name == beat.ToString())
 				_fishObjects[(short)beat].Flash();
 			else
@@ -233,7 +239,7 @@ public class FishingMG2 : FishingMinigame
 	protected async override Task _onGameOver()
 	{
 		_ring.transform.localScale = Vector3.zero;
-		await Task.Delay(1000);
+		await Task.Delay(800);
 
 		foreach (var fish in _fishObjects)
 			Destroy(fish.go);

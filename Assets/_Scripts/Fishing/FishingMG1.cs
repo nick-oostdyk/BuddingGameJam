@@ -34,13 +34,13 @@ public class FishingMG1 : FishingMinigame
 		var direction = Vector2.right;
 		var influence = 2f * Mathf.PerlinNoise(Time.time * perlinStep, 0f) - 1f;
 
-		// will to escape
+		//// will to escape
 		var fishLocalPos = _fish.transform.localPosition;
 		influence += .1f * (fishLocalPos.x < 0f ? -1f : 1f);
 		_fish.GetComponent<SpriteRenderer>().flipX = influence <= 0f;
 
 		// player influence
-		influence += .6f * _action.ReadValue<float>();
+		influence += 1.5f * _action.ReadValue<float>();
 
 		return direction * influence;
 	}

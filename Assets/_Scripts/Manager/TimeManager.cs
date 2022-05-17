@@ -52,6 +52,7 @@ public class TimeManager : MonoBehaviour
 		public static void Begin()
 		{
 			OnDaytimeEvent += _onMorningHandler;
+			OnDaytimeEvent += _onNightHandler;
 			OnDaytimeEvent += _onSleepHandler;
 			_setTime(DaytimeEvent.MORNING);
 		}
@@ -89,6 +90,19 @@ public class TimeManager : MonoBehaviour
 			if (evnt != DaytimeEvent.MORNING) return;
 			_dayStart = TimeSinceStart;
 			++Day;
+		}
+
+		private static void _onNightHandler(DaytimeEvent evnt)
+		{
+			if (evnt != DaytimeEvent.NIGHT) return;
+			if (!GameManager.Instance.GameFlags.HasFlag(GameFlag.CAVE_ENTERED))
+			{
+				DialogueBoxManager.Instance.PushSequence(new DialogueBoxManager.TextSequence(new string[] {
+					"It looks like it's getting dark out here.",
+					"I should find a place to stay for the night.",
+					"There might be dangerous things in the dark.",
+					}));
+			}
 		}
 
 		// sets player to sleep when sleep is triggered

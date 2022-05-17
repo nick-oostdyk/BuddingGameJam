@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _anim: {fileID: 1627980230900620061}
-  _text: {fileID: 4217340892843800662}
+  _tmpugui: {fileID: 4217340892843800662}
   _image: {fileID: 3612395248102348608}
 --- !u!95 &1627980230900620061
 Animator:
