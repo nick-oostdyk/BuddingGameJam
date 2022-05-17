@@ -2888,8 +2888,8 @@ MonoBehaviour:
   _playerSpawnPosition: {fileID: 1614023340}
   _gameStartCutscene: {fileID: 1478008232}
   _timerToggle: {fileID: 634310761}
-  _uiButtonsToggle: {fileID: 0}
-  _playCutscene: 0
+  _uiButtonsToggle: {fileID: 634310763}
+  _playCutscene: 1
 --- !u!114 &477756185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3286,6 +3286,7 @@ GameObject:
   - component: {fileID: 547344723}
   - component: {fileID: 547344721}
   - component: {fileID: 547344720}
+  - component: {fileID: 547344724}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
